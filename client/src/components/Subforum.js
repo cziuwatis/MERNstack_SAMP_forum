@@ -16,7 +16,8 @@ export default class Subforum extends Component
             description: "",
             topics: [],
             createModal: false,
-            currentPage: 0
+            currentPage: 0,
+            availablePages: 1
         };
         this.updateTopics();
     }
@@ -40,12 +41,12 @@ export default class Subforum extends Component
         axios.put('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/new_topic', topic)
                 .then(res => this.updateTopics())
                 .catch((error) => console.log(error));
-        
+
     }
 
     updateTopics() {
-        axios.get('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id)
-                .then(res => !res.data.error ? this.setState({title: res.data.title, description: res.data.description, topics: res.data.topics}) : console.log(res.data.error))
+        axios.get('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/page/" + this.state.currentPage)
+                .then(res => !res.data.error ? this.setState({title: res.data.title, description: res.data.description, topics: res.data.topics, currentPage: res.data.page, availablePages: res.data.availablePages}) : console.log(res.data.error))
                 .catch((error) => console.log(error));
     }
 

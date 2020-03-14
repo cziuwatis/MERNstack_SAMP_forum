@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 let postSchema = new mongoose.Schema(
         {
@@ -26,4 +27,5 @@ let subforumSchema = new mongoose.Schema(
             topics: [subforumTopicSchema]
         });
 
+subforumSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('subforum', subforumSchema);
