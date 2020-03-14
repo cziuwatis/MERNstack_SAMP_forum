@@ -46,7 +46,9 @@ export default class ForumSubforumTopic extends Component
                .catch((error) => console.log(error));
             let editStates = this.state.edit;
             editStates[editField] = false;
-            this.setState({edit: editStates, [editField]: finalTitle, beforeEdit:{[editField]: finalTitle}});
+            let beforeEditStates = this.state.beforeEdit;
+            beforeEditStates[editField] = finalTitle;
+            this.setState({edit: editStates, [editField]: finalTitle, beforeEdit:beforeEditStates});
         }
     };
     handleContentEditable= (e, editField) =>{
@@ -95,7 +97,6 @@ export default class ForumSubforumTopic extends Component
     }
     
     render() {
-        
         let messageCount = this.props.topic.topics.reduce((total, topic)=> total + topic.posts.length, 0);
         return (
                 <li className="ag_subforum_topic">
