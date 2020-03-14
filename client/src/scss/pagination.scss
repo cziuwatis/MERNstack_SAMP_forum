@@ -1,0 +1,68 @@
+
+@import "variables.scss";
+
+.ag_pagination_container{
+    border-top: 2px solid $nth-greylight;
+    border-bottom: 2px solid $nth-greylight;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    flex: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    //justify-content: center;
+    .ag_sort_select, .ag_pagination{
+        //padding: 7px;
+    }
+    .ag_sort_select{
+        flex-basis: 10%;
+        border: 0;
+        outline: 0;
+    }
+    .ag_pagination{
+        flex-basis: 85%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        span{
+            //margin-right: 15px;
+            padding: 7px;
+            &:hover{
+                cursor: pointer;
+                background-color: $secondary-color;
+                color: $tertiary-color;
+                    transition-duration: .3s;
+            }
+        }
+        .ag_pagination_pages{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            flex-basis: 20%;
+            &:hover{
+                background-color: inherit;
+                color: inherit;
+                cursor: auto;
+            }
+            a{
+                padding: 7px;
+                &:hover{
+                    cursor: pointer;
+                    background-color: $secondary-color;
+                    color: $tertiary-color;
+                    transition-duration: .3s;
+                }
+            }
+            .ag_current_page{
+                background-color: $tertiary-color;
+                color: $secondary-color;
+                //padding: 7px;
+            }
+        }
+    }
+}

@@ -1,0 +1,221 @@
+
+@import "variables.scss";
+
+#forum{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#ag_main_content{
+    //width:70%;
+    // margin-left: 50px;
+    //overflow: hidden;
+    flex-basis: 60%;
+    ul{
+        margin: 0;
+        padding:0;
+        //display: grid;
+        //margin-bottom: 2%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .ag_subforum{
+            animation: show_nice both 0.2s linear;
+            margin-bottom: 5%;
+            box-shadow: black 0px 0px 15px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            flex-basis: 100%;
+        }
+    }
+    .ag_forum_control{
+        flex-basis: 100%;
+        display: flex;
+        padding: 5px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0px 0px 7px #292929;
+        justify-content: center;
+    }
+    .ag_subforum_control{
+        flex-basis: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        //margin-top: 25px;
+        //margin-bottom: 20px;
+        background-color: #fff;
+        // box-shadow: 0px 0px 5px black;
+        padding: 8px;
+        justify-content: space-evenly;
+    }
+    .ag_subforum_title{
+        //padding-left: 40px;
+        color: white;
+        //background-image: linear-gradient(90deg, $secondary-color 25%, #472e42 25%, #472e42 50%, $secondary-color 50%, $secondary-color 75%, #472e42 75%, #472e42 100%);
+        //background-size: 100px 100px;
+        background-color: $secondary-color;
+        border-bottom: 4px solid $tertiary-color;
+        border-left: 15px solid $tertiary-color;
+        text-shadow: black 3px 2px 4px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        h3{
+            margin: 0;
+            padding: 0;
+            font-size: 40px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 40px;
+            flex-basis: 100%;
+            background-image: url("../img/gangsedit1.png");
+            background-repeat: no-repeat;
+            //background-size: 25%;
+            background-position-x: right;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            cursor: default;
+            word-wrap: anywhere;
+            div{
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                flex-basis: 100%;
+            }
+            i{
+                margin-right: 10px;
+                margin-left: 5px;
+                padding: 3px;
+                transition-duration: .3s;
+            }
+            .content-editable{
+                flex-basis: 50%;
+                min-height: 45px;
+                @include ag_general_content_editable;
+            }
+        }
+    }
+    .ag_subforum_topic{
+        animation: show_nice .4s;
+        padding: 1%;
+        //display: inline-block;
+        display: flex;
+        flex-basis: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        min-height: 110px;
+        padding-left: 40px;
+        background-color: $nth-greylight;
+        &:nth-of-type(2n){
+            background-color: #fff;
+        }
+        & div{
+            //float: left;
+            min-height: 110px;
+        }
+        .ag_subforum_topic_logo{
+            flex-basis: 15%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img{
+                width:100px;
+                height: 100px;
+                //flex: 100%;
+            }
+        }
+        .ag_subforum_topic_details{
+            flex-basis:50%;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            word-wrap: anywhere;
+            h4{
+                margin:0;
+                flex-basis: 100%;
+                //margin-top: 5%;
+                a{
+                    transition-duration: .4s;
+                    @include ag_general_link_hover; 
+                }
+                div{
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-content: center;
+                    align-items: center;
+                    i{
+                        margin-left: 5px;
+                        margin-right: 10px;
+                    }
+                    .content-editable{
+                        flex-basis: 70%;
+                        min-height: 45px !important;
+                        @include ag_general_content_editable;
+                    }
+                }
+            }
+            .ag_subforum_topic_description_edit{
+                display: flex;
+                flex-wrap: wrap;
+                flex-basis: 100%;
+                align-content: center;
+                align-items: center;
+                i{
+                    margin-left: 5px;
+                    margin-right: 10px;
+                }
+                .content-editable{
+                    flex-basis: 70%;
+                    min-height: 45px;
+                    @include ag_general_content_editable;
+                }
+            }
+        }
+        .ag_subforum_topic_statistic{
+            flex-basis:7%;
+            text-align: center;
+            //padding-top: 35px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+        }
+        .ag_subforum_topic_latest_post{
+            flex-basis:28%;
+            min-height: 90px;
+            //padding-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: center;
+            img{
+                border-radius: 50%;
+                height: 45px;
+                // width: 45px;
+                flex-basis: 20%;
+                //display: inline-block;
+                //margin-left: 25px;
+                //margin-right: 15px;
+            }
+            ul{
+                padding:0;
+                margin:0;
+                display: flex;
+                flex-wrap: wrap;
+                //justify-content: center;
+                flex-basis: 50%;
+                li{
+                    flex-basis: 100%;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

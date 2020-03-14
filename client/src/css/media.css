@@ -1,0 +1,150 @@
+@media screen and (max-width: 1210px) {
+  #forum {
+    justify-content: center; }
+
+  #ag_main_content {
+    flex-basis: 80%; } }
+@media screen and (max-width: 1080px) {
+  #ag_header #ag_header_content #ag_server_details {
+    flex-basis: 40%; } }
+@media screen and (max-width: 980px) {
+  #ag_main_content {
+    flex-basis: 95%; }
+    #ag_main_content .ag_subforum_title h3 {
+      font-size: 35px; } }
+@media screen and (max-width: 900px) {
+  #ag_header #ag_header_content #ag_server_details {
+    flex-basis: 50%; }
+  #ag_header #ag_header_content #ag_header_connect {
+    flex-basis: 40%; }
+
+  #ag_main_content .ag_subforum_topic {
+    padding-left: 1%; }
+    #ag_main_content .ag_subforum_topic .ag_subforum_topic_logo {
+      flex-basis: 10%; }
+      #ag_main_content .ag_subforum_topic .ag_subforum_topic_logo img {
+        flex: 100%;
+        width: auto;
+        height: 70px; }
+    #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post {
+      flex-basis: 31%; }
+
+  #topic #ag_topic_content {
+    flex-basis: 97%; }
+
+  .ag_create_topic_modal_container .ag_create_topic_modal {
+    flex-basis: 85%; } }
+@media screen and (max-width: 712px) {
+  #ag_header #ag_top_header {
+    margin-top: 0; }
+  #ag_header #ag_header_content #ag_server_details {
+    margin-left: 0; }
+
+  #ag_main_content .ag_subforum_topic .ag_subforum_topic_logo {
+    flex-basis: 0; }
+    #ag_main_content .ag_subforum_topic .ag_subforum_topic_logo img {
+      display: none; }
+
+  #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_profile .ag_topic_post_profile_image_container .ag_topic_post_profile_image {
+    width: 100px;
+    height: 100px; }
+  #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_profile .ag_topic_post_profile_info {
+    flex-basis: 98%;
+    font-size: 14px; }
+  #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_content {
+    font-size: 14px; } }
+@media screen and (max-width: 625px) {
+  #ag_header #ag_header_content {
+    justify-content: center; }
+    #ag_header #ag_header_content #ag_server_details {
+      flex-basis: 70%; }
+    #ag_header #ag_header_content #ag_header_connect {
+      flex-basis: 100%; }
+      #ag_header #ag_header_content #ag_header_connect a {
+        flex-basis: 80%; }
+
+  #ag_main_content {
+    flex-basis: 100%; }
+    #ag_main_content .ag_subforum_title h3 {
+      font-size: 28px; }
+    #ag_main_content .ag_subforum_topic {
+      min-height: 240px;
+      align-content: space-evenly; }
+      #ag_main_content .ag_subforum_topic div {
+        min-height: auto !important; }
+      #ag_main_content .ag_subforum_topic .ag_subforum_topic_details {
+        flex-basis: 100%;
+        justify-content: center; }
+        #ag_main_content .ag_subforum_topic .ag_subforum_topic_details h4 {
+          text-align: center; }
+        #ag_main_content .ag_subforum_topic .ag_subforum_topic_details p {
+          margin: 0;
+          text-align: center; }
+      #ag_main_content .ag_subforum_topic .ag_subforum_topic_statistic {
+        flex-basis: 100%; }
+      #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post {
+        flex-basis: 100%;
+        justify-content: center; }
+        #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul {
+          flex-basis: 50%; }
+        #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post img {
+          height: 55px;
+          flex-basis: auto; }
+
+  #subforum #ag_subforum_topic_content {
+    flex-basis: 100%; }
+
+  .ag_pagination_container {
+    justify-content: center; }
+    .ag_pagination_container .ag_pagination {
+      flex-basis: 100%; }
+    .ag_pagination_container .ag_sort_select {
+      flex-basis: 50%;
+      padding: 7px; }
+
+  #topic #ag_topic_content {
+    flex-basis: 100%; }
+    #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header {
+      padding: 15px; }
+      #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_profile_image {
+        display: block; }
+      #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_details {
+        align-content: center;
+        padding-left: 5px;
+        flex-basis: auto; }
+        #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_details .ag_topic_post_username {
+          flex-basis: 100%;
+          text-align: left; }
+        #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_details .ag_topic_post_datetime {
+          padding-top: 5px; }
+    #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_profile {
+      display: none; }
+    #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_content {
+      flex-basis: 100%; } }
+@media screen and (max-width: 485px) {
+  #subforum #ag_subforum_topic_content #ag_subforum_topics .ag_subforum_topic .ag_subforum_topic_details {
+    flex-basis: 78%;
+    padding: 3px; }
+    #subforum #ag_subforum_topic_content #ag_subforum_topics .ag_subforum_topic .ag_subforum_topic_details p {
+      margin: 0;
+      margin-bottom: 15px; }
+  #subforum #ag_subforum_topic_content #ag_subforum_topics .ag_subforum_topic .ag_subforum_topic_statistics {
+    justify-content: right;
+    flex-basis: auto; }
+  #subforum #ag_subforum_topic_content #ag_subforum_topics .ag_subforum_topic .ag_subforum_topic_latest_post {
+    flex-basis: 100%; }
+
+  .ag_create_topic_modal_container .ag_create_topic_modal .ck-editor {
+    width: 98%; } }
+@media screen and (max-width: 390px) {
+  .ag_pagination_container .ag_pagination .ag_pagination_pages {
+    flex-basis: 100%; }
+
+  #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_details {
+    flex-basis: 75%; }
+  #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_profile {
+    display: none; }
+  #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_content {
+    flex-basis: 100%; } }
+
+/*# sourceMappingURL=media.css.map */

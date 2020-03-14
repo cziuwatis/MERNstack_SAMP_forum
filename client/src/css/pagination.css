@@ -1,0 +1,56 @@
+@keyframes show_nice {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+.ag_pagination_container {
+  border-top: 2px solid #f6f6f6;
+  border-bottom: 2px solid #f6f6f6;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0;
+  flex: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+  .ag_pagination_container .ag_sort_select {
+    flex-basis: 10%;
+    border: 0;
+    outline: 0; }
+  .ag_pagination_container .ag_pagination {
+    flex-basis: 85%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold; }
+    .ag_pagination_container .ag_pagination span {
+      padding: 7px; }
+      .ag_pagination_container .ag_pagination span:hover {
+        cursor: pointer;
+        background-color: #594455;
+        color: #758e4f;
+        transition-duration: .3s; }
+    .ag_pagination_container .ag_pagination .ag_pagination_pages {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      flex-basis: 20%; }
+      .ag_pagination_container .ag_pagination .ag_pagination_pages:hover {
+        background-color: inherit;
+        color: inherit;
+        cursor: auto; }
+      .ag_pagination_container .ag_pagination .ag_pagination_pages a {
+        padding: 7px; }
+        .ag_pagination_container .ag_pagination .ag_pagination_pages a:hover {
+          cursor: pointer;
+          background-color: #594455;
+          color: #758e4f;
+          transition-duration: .3s; }
+      .ag_pagination_container .ag_pagination .ag_pagination_pages .ag_current_page {
+        background-color: #758e4f;
+        color: #594455; }
+
+/*# sourceMappingURL=pagination.css.map */

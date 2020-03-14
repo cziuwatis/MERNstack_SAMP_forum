@@ -1,0 +1,66 @@
+
+@import "variables.scss";
+
+#ag_login_form{
+    position:fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,1, .5);
+    z-index: 5;
+    form{
+        position: absolute;
+        width: 25%;
+        left: 30%;
+        top: 20%;
+        padding: 1%;
+        background-color: $secondary-color;
+        color: white;
+        border-radius: 5px;
+        box-shadow: black 0px 0px 8px;
+        h2{
+            text-align: center;
+            margin: 1%;
+        }
+        .ag_login_form_input_container{
+            display: grid;
+            padding-left: 15%;
+            padding-right: 15%;
+            padding-top: 1%;
+            input{
+                width: 84%;
+                padding: 3%;
+                padding-left: 8%;
+                padding-right: 8%;
+                border-radius: 5px;
+                border-style: solid;
+            }
+            label{
+                position: relative;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    background-color: #adadad;
+                    width: 80%;
+                    height: 1px;
+                    left: 12.5%;
+                    bottom: 15%;
+                }
+            }
+        }
+        .ag_login_form_submit_container{
+            padding-left: 30%;
+            padding-right: 28%;
+            margin-top: 5%;
+            input{
+                width: 100%;
+                background-color: $tertiary-color;
+                border: 0;
+                color: white;
+                box-shadow: black 1px 1px 3px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

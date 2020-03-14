@@ -1,0 +1,102 @@
+
+@import "variables.scss";
+
+html{
+    min-height: 100%;
+    position: relative;
+    font-size: 16px;
+    background-color: $primary-color;
+    background-image: url("../img/gtamap2edit1.png");
+    //background-size: contain;
+    //background-position-x: 480px;
+    //background-repeat: repeat-y;
+    font-family: 'rawline', sans-serif;
+    scroll-behavior: smooth;
+    body{
+        margin:0;
+    }
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+ul{
+    list-style: none;
+}
+.ag_btn{
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 7px;
+    text-align: center;
+    &.ag_common_btn{
+        padding: 10px;
+        background-color: $tertiary-color;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        box-shadow: $secondary-color 0px 0px 2px;
+        font-weight: bold;
+        text-shadow: 0px 0px 2px #ffffff80;
+        transition-duration: .3s;
+        &:hover{
+            background-color: $secondary-color;
+            box-shadow: $secondary-color 0px 0px 11px;
+            cursor: pointer;
+            transition-duration: .3s;
+        }
+        &.active{
+            background-color: $primary-color;
+            box-shadow: $primary-color 0px 0px 11px;
+            cursor: pointer;
+            transition-duration: .3s;
+        }
+    }
+}
+
+.ag_user_role{
+    .admin{
+        color: red;
+    }
+    .user{
+        color: lightblue;
+    }
+    .guest{
+        color: lightgray;
+    }
+}
+.show {
+    display:block;
+}
+.confirmationUI{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    background-color: $primary-color;
+    background-image: url("../img/gtamap2edit1.png");
+    text-shadow: 0px 0px 5px black;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px black;
+    padding: 15px;
+    h3{
+        flex-basis: 100%;
+    }
+    p{
+        flex-basis: 100%;
+    }
+    .ag_btn{
+        flex-basis: 30%;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
+
+.ag_confirm_tick:hover{
+    color: green;
+}
+.ag_cancel_tick:hover{
+    color: red;
+}

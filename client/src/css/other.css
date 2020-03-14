@@ -1,0 +1,88 @@
+@keyframes show_nice {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+html {
+  min-height: 100%;
+  position: relative;
+  font-size: 16px;
+  background-color: #FFA500;
+  background-image: url("../img/gtamap2edit1.png");
+  font-family: 'rawline', sans-serif;
+  scroll-behavior: smooth; }
+  html body {
+    margin: 0; }
+
+a {
+  text-decoration: none;
+  color: inherit; }
+
+ul {
+  list-style: none; }
+
+.ag_btn {
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 2px;
+  padding: 7px;
+  text-align: center; }
+  .ag_btn.ag_common_btn {
+    padding: 10px;
+    background-color: #758e4f;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    box-shadow: #594455 0px 0px 2px;
+    font-weight: bold;
+    text-shadow: 0px 0px 2px #ffffff80;
+    transition-duration: .3s; }
+    .ag_btn.ag_common_btn:hover {
+      background-color: #594455;
+      box-shadow: #594455 0px 0px 11px;
+      cursor: pointer;
+      transition-duration: .3s; }
+    .ag_btn.ag_common_btn.active {
+      background-color: #FFA500;
+      box-shadow: #FFA500 0px 0px 11px;
+      cursor: pointer;
+      transition-duration: .3s; }
+
+.ag_user_role .admin {
+  color: red; }
+.ag_user_role .user {
+  color: lightblue; }
+.ag_user_role .guest {
+  color: lightgray; }
+
+.show {
+  display: block; }
+
+.confirmationUI {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  background-color: #FFA500;
+  background-image: url("../img/gtamap2edit1.png");
+  text-shadow: 0px 0px 5px black;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px black;
+  padding: 15px; }
+  .confirmationUI h3 {
+    flex-basis: 100%; }
+  .confirmationUI p {
+    flex-basis: 100%; }
+  .confirmationUI .ag_btn {
+    flex-basis: 30%;
+    margin-left: 5px;
+    margin-right: 5px; }
+
+.ag_confirm_tick:hover {
+  color: green; }
+
+.ag_cancel_tick:hover {
+  color: red; }
+
+/*# sourceMappingURL=other.css.map */

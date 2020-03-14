@@ -1,0 +1,70 @@
+import React, {Component} from "react";
+import {Link} from 'react-router-dom';
+export default class Header extends Component
+{
+
+    constructor(props)
+    {
+        super(props);
+    }
+    render() {
+        return (
+                <header id="ag_header">
+                    <nav id="ag_top_header">
+                        <ul>
+                        <li><Link to="/"><i className="fas fa-warehouse"></i> Forum</Link></li>
+                            <li id="ag_header_community">
+                                <a href="#"><i className="fas fa-users"></i> Community</a>
+                            </li>
+                            <li id="ag_user_header_profile">
+                                <div className="ag_top_header_dropdown">
+                                    <a>
+                                        <img id="ag_header_avatar" src={"/img/profiles/profile.png"} alt="profile_picture"/>
+                                        Profile_Name
+                                        <i className="fas fa-caret-down"></i>
+                                    </a>
+                                    <div className="ag_top_header_dropdown_content">
+                                        <a href="#">Settings</a>
+                                        <a href="#">Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div id="ag_header_logo">
+                        <img src={"/img/server-logo.png"} alt="logo"/>
+                    </div>
+                    <div id="ag_header_content">
+                        <div id="ag_server_details">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th colSpan="2">Server Name Goes Here</th>
+                                        <th rowSpan="4">
+                                            <img src={"/img/server-logo.png"} alt="server logo"/>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>IP: </td>
+                                        <td>192.168.1.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Players: </td>
+                                        <td id="ag_server_details_player_count">150/300</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Version: </td>
+                                        <td>3.7.2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="ag_header_connect">
+                            <a href="#" className="ag_btn ag_primary_btn">JOIN US ON STEAM <i className="fab fa-steam"></i></a>
+                            <a href="#" className="ag_btn ag_primary_btn">JOIN DISCORD <i className="fab fa-discord"></i></a>
+                        </div>
+                    </div>
+                </header>
+                );
+    }
+}

@@ -1,0 +1,106 @@
+@keyframes show_nice {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+#subforum {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; }
+
+#ag_subforum_topic_content {
+  flex-basis: 90%;
+  margin-bottom: 2%;
+  border-radius: 5px;
+  background-color: white;
+  overflow: hidden;
+  box-shadow: #000000ad 0px 0px 23px;
+  display: flex;
+  flex-wrap: wrap; }
+  #ag_subforum_topic_content #ag_subforum_topic_header {
+    background-color: #594455;
+    background-image: url(../img/backgroundcityedit1.png);
+    background-size: cover;
+    background-position-y: 55%;
+    background-repeat: no-repeat;
+    color: white;
+    border-bottom: 4px solid #758e4f;
+    border-left: 15px solid #758e4f;
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 15px; }
+    #ag_subforum_topic_content #ag_subforum_topic_header h4 {
+      flex-basis: 100%;
+      margin-bottom: 0; }
+    #ag_subforum_topic_content #ag_subforum_topic_header p {
+      margin-top: 20px;
+      flex-basis: 100%; }
+  #ag_subforum_topic_content ul {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center; }
+  #ag_subforum_topic_content .ag_subforum_panel {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: right; }
+    #ag_subforum_topic_content .ag_subforum_panel .ag_subforum_create_topic_button {
+      margin-right: 10px;
+      margin-top: 10px; }
+  #ag_subforum_topic_content #ag_subforum_topics {
+    margin: 0;
+    flex-basis: 100%; }
+  #ag_subforum_topic_content .ag_subforum_topic {
+    animation: show_nice .4s;
+    padding: 1%;
+    padding-left: 2%;
+    display: inline-block;
+    min-height: 80px;
+    flex-basis: 97%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; }
+    #ag_subforum_topic_content .ag_subforum_topic:nth-of-type(odd) {
+      background-color: #f6f6f6; }
+    #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details {
+      flex-basis: 60%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center; }
+      #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details h4 {
+        margin: 0;
+        flex-basis: 100%; }
+        #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details h4 a:hover {
+          color: #758e4f;
+          transition-duration: .4s;
+          cursor: pointer; }
+    #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_statistics {
+      flex-basis: 10%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center; }
+    #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post {
+      flex-basis: 30%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center; }
+      #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post img {
+        border-radius: 50%;
+        height: 45px; }
+      #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post ul {
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; }
+        #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li {
+          flex-basis: 100%;
+          text-align: center; }
+
+/*# sourceMappingURL=subforum-topic.css.map */

@@ -1,0 +1,72 @@
+{
+  "name": "cars_session",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ckeditor/ckeditor5-alignment": "^17.0.0",
+    "@ckeditor/ckeditor5-autoformat": "^17.0.0",
+    "@ckeditor/ckeditor5-autosave": "^17.0.0",
+    "@ckeditor/ckeditor5-basic-styles": "^17.0.0",
+    "@ckeditor/ckeditor5-block-quote": "^17.0.0",
+    "@ckeditor/ckeditor5-build-classic": "^17.0.0",
+    "@ckeditor/ckeditor5-dev-utils": "^12.0.9",
+    "@ckeditor/ckeditor5-dev-webpack-plugin": "^8.0.9",
+    "@ckeditor/ckeditor5-editor-classic": "^17.0.0",
+    "@ckeditor/ckeditor5-essentials": "^17.0.0",
+    "@ckeditor/ckeditor5-font": "^17.0.0",
+    "@ckeditor/ckeditor5-image": "^17.0.0",
+    "@ckeditor/ckeditor5-link": "^17.0.0",
+    "@ckeditor/ckeditor5-list": "^17.0.0",
+    "@ckeditor/ckeditor5-media-embed": "^17.0.0",
+    "@ckeditor/ckeditor5-paragraph": "^17.0.0",
+    "@ckeditor/ckeditor5-paste-from-office": "^17.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@ckeditor/ckeditor5-remove-format": "^17.0.0",
+    "@ckeditor/ckeditor5-theme-lark": "^17.0.0",
+    "@ckeditor/ckeditor5-upload": "^17.0.0",
+    "@ckeditor/ckeditor5-word-count": "^17.0.0",
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "postcss-loader": "^3.0.0",
+    "raw-loader": "^3.1.0",
+    "react": "^16.9.0",
+    "react-bootstrap": "^1.0.0-beta.11",
+    "react-confirm-alert": "^2.6.1",
+    "react-contenteditable": "^3.3.3",
+    "react-dom": "^16.9.0",
+    "react-html-parser": "^2.0.2",
+    "react-modal": "^3.11.2",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.1.0",
+    "style-loader": "^1.1.3",
+    "terser-webpack-plugin": "^2.3.5",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "Example using sessionStorage to hold simple login data",
+  "main": "index.js",
+  "devDependencies": {},
+  "author": "Derek O Reilly",
+  "license": "ISC"
+}
