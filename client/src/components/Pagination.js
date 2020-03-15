@@ -74,10 +74,12 @@ export default class Pagination extends Component
                     </div>
                     {
                                                 this.props.enableSort ?
-                                                            <select className="ag_sort_select">
+                                                            <select onChange={this.props.sortBy} className="ag_sort_select">
                                                                 <option value="">Sort by</option>
-                                                                <option value="date">Latest Posts</option>
-                                                                <option value="title">Title</option>
+                                                                <option value="latestPost">Latest Posts</option>
+                                                                <option value="earliestPost">Earliest Posts</option>
+                                                                <option value="oldestTopic">Oldest Topic</option>
+                                                                <option value="newestTopic">Newest Topic</option>
                                                             </select>
                                                         : null
                     }
