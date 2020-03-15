@@ -4853,7 +4853,6 @@ ul {
   margin-bottom: 2%;
   border-radius: 5px;
   background-color: white;
-  overflow: hidden;
   box-shadow: #000000ad 0px 0px 23px;
   display: flex;
   flex-wrap: wrap; }
@@ -4925,7 +4924,6 @@ ul {
       align-content: center;
       justify-content: center; }
     #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post {
-      flex-basis: 30%;
       display: flex;
       flex-wrap: wrap;
       align-content: center;
@@ -4942,6 +4940,36 @@ ul {
         #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li {
           flex-basis: 100%;
           text-align: center; }
+    #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_edit_container {
+      position: relative; }
+      #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_edit_container span {
+        transition-duration: .3s;
+        font-size: 18px; }
+        #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_edit_container span:hover {
+          font-weight: bold;
+          transition-duration: .3s;
+          cursor: pointer; }
+      #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_edit_container .ag_subforum_topic_edit_context_menu {
+        animation: show-nice .4s;
+        position: absolute;
+        background-color: white;
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        box-shadow: 0px 2px 5px black;
+        border-radius: 5px;
+        z-index: 10; }
+        #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_edit_container .ag_subforum_topic_edit_context_menu .ag_subforum_topic_edit_context_option {
+          flex-basis: 100%;
+          padding: 7px;
+          flex-basis: 100%;
+          cursor: pointer;
+          transition-duration: .3s; }
+          #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_edit_container .ag_subforum_topic_edit_context_menu .ag_subforum_topic_edit_context_option:hover {
+            background-color: #758e4f;
+            color: white;
+            transition-duration: .3s; }
 
 @keyframes show_nice {
   from {

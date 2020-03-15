@@ -90,7 +90,6 @@ router.route('/:sub_id/:subt_id/:topic_id/:page').get((req, res) =>
                         }
                     }
                     topic.posts = postsToSend;
-                    console.log(req.params.page);
                     res.json({currentPage: req.params.page, availablePages: (Math.ceil(posts.length / perPageLimit)), topic: topic, subforum: {title: data.topics[0].title}});
                     }else{
                         res.json({error: "Posts not found for specified topic, topic possibly doesn't exist."});

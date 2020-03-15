@@ -37,11 +37,8 @@ export default class Forum extends Component
     removeSubforum = id => {
         let deleteSubforum = () => {
             axios.delete('http://localhost:4000/forum/delete_subforum/' + id)
-                    .then(res => console.log())
+                    .then(res => !res.data.error ? this.setState({subforums: this.state.subforums.filter((subforum) => subforum._id !== id)}) : console.log(res.data.error))
                     .catch((error) => console.log(error));
-
-            this.setState({subforums: this.state.subforums.filter((subforum) => subforum._id !== id)});
-
         }
         confirmAlert({
             customUI: ({ onClose }) => {

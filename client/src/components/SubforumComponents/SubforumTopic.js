@@ -12,9 +12,26 @@ export default class SubforumTopic extends Component
         this.state = {
             title: this.props.topic.title,
             creationDate: this.props.topic.creationDate,
-            postedBy: this.props.topic.postedBy
+            postedBy: this.props.topic.postedBy,
+            contextMenuOpen: false
         };
     }
+
+    toggleContextMenu = e => {
+        this.setState({contextMenuOpen: !this.state.contextMenuOpen});
+    }
+
+    openEditContextualMenu = e => {
+        this.setState({contextMenuOpen: true});
+    }
+    closeEditContextualMenu = e => {
+        this.setState({contextMenuOpen: false});
+    }
+
+    deleteTopic = e => {
+        this.props.removeTopic(e, this.props.topic._id);
+    }
+
     render() {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let date = new Date(this.state.creationDate);
@@ -34,6 +51,17 @@ export default class SubforumTopic extends Component
                             <li>User_Name</li>
                             <li>{latestPostDate}</li>
                         </ul>
+                    </div>
+                    <div className="ag_subforum_topic_edit_container">
+                        <span onClick={this.toggleContextMenu}>&#10247;</span>
+                        {
+                            this.state.contextMenuOpen ?
+                                    <ul className="ag_subforum_topic_edit_context_menu">
+                                        <li onClick={this.deleteTopic} className="ag_subforum_topic_edit_context_option">Delete</li>
+                                        <li onClick={this.closeEditContextualMenu} className="ag_subforum_topic_edit_context_option">Close</li>
+                                    </ul>
+                                    : null
+                        }
                     </div>
                 </li>
                 );

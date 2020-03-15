@@ -107,16 +107,12 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
             let topics = data.topics[0].topics;
             if (req.body.sortBy) {
                 if (req.body.sortBy === 'latestPost') {
-                console.log("latest");
                     topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
                 } else if (req.body.sortBy === 'earliestPost') {
-                console.log("earliest");
                     topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? -1 : 1);
                 } else if (req.body.sortBy === 'oldestTopic') {
-                console.log("oldest");
                     topics = topics.sort((a, b) => a.creationDate < b.creationDate ? -1 : 1);
                 } else if (req.body.sortBy === 'newestTopic') {
-                console.log("newest");
                     topics = topics.sort((a, b) => a.creationDate < b.creationDate ? 1 : -1);
                 } else {
                     topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
@@ -181,5 +177,42 @@ router.route('/:id/update_subforum_topic/:topic_id').put((req, res, next) =>
         }
     });
 });
+
+router.route('/delete_topic/:subforum/:subforumTopic/:topic').delete((req, res, next) =>
+        {
+            subforumsSchema.find({_id: req.params.subforum, 'topics._id': req.params.subforumTopic}, 'topics.$.topics', (error, data) =>
+            {
+                if (error)
+                {
+                    res.status(500).json({msg: null, error: error});
+                } else
+                {
+                    topics = data[0].topics[0].topics;
+                    let found = false;
+                    for (let i = 0; i < topics.length; i++) {
+                        if (topics[i]._id == req.params.topic) {
+                            topics.splice(i, 1);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        subforumsSchema.findOneAndUpdate(
+                                {_id: req.params.subforum, 'topics._id': req.params.subforumTopic},
+                                {$set: {'topics.$.topics': topics}},
+                                (error, data) => {
+                            if (error) {
+                                res.status(500).json({msg: null, error: error});
+                            } else {
+                                res.status(200).json({msg: "successfully removed topic", error: error});
+                            }
+                        }
+                        );
+                    } else {
+                        res.status(500).json({msg: null, error: "Something went wrong"});
+                    }
+                }
+            });
+        });
 
 module.exports = router;

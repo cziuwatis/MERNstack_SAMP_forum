@@ -4,6 +4,9 @@ import axios from 'axios';
 import CreateTopicModal from './SubforumComponents/CreateTopicModal';
 import SubforumTopic from './SubforumComponents/SubforumTopic';
 import Pagination from './Pagination';
+import ConfirmationUI from './ConfirmationUI';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 
 export default class Subforum extends Component
@@ -42,7 +45,21 @@ export default class Subforum extends Component
         axios.put('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/new_topic', topic)
                 .then(res => this.updateTopics())
                 .catch((error) => console.log(error));
+    }
 
+    deleteTopic = (e, id) => {
+        let deleteTopic = () => {
+            axios.delete('http://localhost:4000/subforum/delete_topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/" + id)
+                    .then(res => !res.data.error ? this.updateTopics() : console.log(res.data.error))
+                    .catch((error) => console.log(error));
+        }
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                        <ConfirmationUI query={"Are you sure?"} msg={"you are about to delete a topic and all of its content"} closeFunction={onClose} yesFunction={deleteTopic}/>
+                        );
+            }
+        });
     }
 
     updateTopics() {
@@ -82,7 +99,7 @@ export default class Subforum extends Component
                                 <span onClick={this.toggleModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
                             </li>
                             <Pagination enableSort={true} sortBy={this.sortBy} goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
-                            {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} />)}
+                            {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} removeTopic={this.deleteTopic}/>)}
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                         </ul>
                     </div>
