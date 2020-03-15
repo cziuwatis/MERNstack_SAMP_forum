@@ -52,7 +52,6 @@ export default class CreateTopicModal extends Component
         } else {
 
             this.props.createTopic({title: this.state.title, content: this.state.content});
-            this.props.closeModal();
         }
     }
 

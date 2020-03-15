@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import CreateTopicModal from './SubforumComponents/CreateTopicModal';
 import SubforumTopic from './SubforumComponents/SubforumTopic';
+import Pagination from './Pagination';
 
 
 export default class Subforum extends Component
@@ -16,7 +17,7 @@ export default class Subforum extends Component
             description: "",
             topics: [],
             createModal: false,
-            currentPage: 0,
+            currentPage: this.props.match.params.page ? this.props.match.params.page : 0,
             availablePages: 1
         };
         this.updateTopics();
@@ -27,7 +28,6 @@ export default class Subforum extends Component
     }
 
     createTopic = data => {
-        console.log(data);
         let topic = {
             title: data.title,
             postedBy: 0,
@@ -46,8 +46,18 @@ export default class Subforum extends Component
 
     updateTopics() {
         axios.get('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/page/" + this.state.currentPage)
-                .then(res => !res.data.error ? this.setState({title: res.data.title, description: res.data.description, topics: res.data.topics, currentPage: res.data.page, availablePages: res.data.availablePages}) : console.log(res.data.error))
+                .then(res => !res.data.error ? this.setState({createModal: false,title: res.data.title, description: res.data.description, topics: res.data.topics,  availablePages: res.data.availablePages}) : console.log(res.data.error))
                 .catch((error) => console.log(error));
+    }
+
+    goToPage = (e, page) => {
+        if (page >= this.state.availablePages || page < 0) {
+            //do nothing
+        } else {
+            axios.get('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/page/" + page)
+                .then(res => !res.data.error ? this.setState({currentPage: page, topics: res.data.topics,  availablePages: res.data.availablePages}) : console.log(res.data.error))
+                .catch((error) => console.log(error));
+        }
     }
 
     render() {
@@ -63,30 +73,9 @@ export default class Subforum extends Component
                             <li className="ag_subforum_panel">
                                 <span onClick={this.toggleModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
                             </li>
-                            <li className="ag_pagination_container">
-                                <div className="ag_pagination">
-                                    <span>&lt;&lt;  </span>
-                                    <span>Previous  </span>
-                                    <span className="ag_pagination_pages"><a href="#" className="ag_current_page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a></span>
-                                    <span>  Next</span>
-                                    <span>  &gt;&gt;</span>
-                                </div>
-                                <select className="ag_sort_select">
-                                    <option value="">Sort</option>
-                                    <option value="date">Date</option>
-                                    <option value="title">Title</option>
-                                </select>
-                            </li>
+                            <Pagination enableSort={true} goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                             {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} />)}
-                            <li className="ag_pagination_container">
-                                <div className="ag_pagination">
-                                    <span>&lt;&lt;  </span>
-                                    <span>Previous  </span>
-                                    <span className="ag_pagination_pages"><a href="#" className="ag_current_page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a></span>
-                                    <span>  Next</span>
-                                    <span>  &gt;&gt;</span>
-                                </div>
-                            </li>
+                            <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                         </ul>
                     </div>
                 </div>

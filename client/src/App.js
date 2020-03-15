@@ -27,7 +27,9 @@ export default class App extends Component
                     <Route exact path='/' component={Forum}/>
                     <Route exact path='/topic/:id' component={Topic}/>
                     <Route exact path='/subforum/:sub_id/:subt_id' component={Subforum}/>
+                    <Route exact path='/subforum/:sub_id/:subt_id/page/:page' component={Subforum}/>
                     <Route exact path='/subforum/:sub_id/:subt_id/topic/:top_id' component={Topic}/>
+                    <Route exact path='/subforum/:sub_id/:subt_id/topic/:top_id/page/:page' component={Topic}/>
                     <Route path="*" component={() => <h3>Invalid URL. Webpage does not exist</h3>} />                            
                         </Switch>
                 </BrowserRouter>);//header solution found in https://forums.meteor.com/t/react-router-how-to-render-component-within-a-layout-vs-stand-alone/45767/2
