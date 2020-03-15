@@ -64,7 +64,37 @@
         text-align: center;
         font-weight: bold; }
       #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_topic_post_datetime {
-        color: #758e4f; }
+        color: #758e4f;
+        flex-basis: 70%; }
+      #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_topic_post_toggle_contextual_menu {
+        transition-duration: .3s;
+        font-size: 18px; }
+        #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_topic_post_toggle_contextual_menu:hover {
+          font-weight: bold;
+          transition-duration: .3s;
+          cursor: pointer; }
+      #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_post_edit_context_menu {
+        animation: show-nice .4s;
+        position: absolute;
+        background-color: white;
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        box-shadow: 0px 2px 5px black;
+        border-radius: 5px;
+        z-index: 10;
+        color: black; }
+        #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_post_edit_context_menu .ag_post_edit_context_option {
+          flex-basis: 100%;
+          padding: 7px;
+          flex-basis: 100%;
+          cursor: pointer;
+          transition-duration: .3s; }
+          #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_post_edit_context_menu .ag_post_edit_context_option:hover {
+            background-color: #758e4f;
+            color: white;
+            transition-duration: .3s; }
       #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_topic_post_header_profile_image {
         display: none;
         height: 50px;

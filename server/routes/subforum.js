@@ -93,7 +93,7 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
 
     let perPageLimit = 7;
 
-//page validation here
+    
     subforumsSchema.findOne(
             {_id: req.params.sub_id, 'topics._id': req.params.subt_id},
             'topics.$._id topics.title topics.description topics.topics._id topics.topics.title topics.topics.postedBy topics.topics.creationDate topics.topics.posts',
@@ -104,6 +104,7 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
             res.json({error: error});
         } else
         {
+            if (data){
             let topics = data.topics[0].topics;
             if (req.body.sortBy) {
                 if (req.body.sortBy === 'latestPost') {
@@ -124,7 +125,7 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
             if (topics.length > perPageLimit * req.params.page) {
                 for (let i = (perPageLimit * req.params.page); i < topics.length && i < (perPageLimit * req.params.page) + perPageLimit; i++) {
                     topicsToSend.push(
-                            {_id: topics[i]._id, title: topics[i].title, creationDate: topics[i].creationDate, postedBy: topics[i].postedBy, latestPost: {
+                            {_id: topics[i]._id, title: topics[i].title, content: topics[i].posts[0].content, creationDate: topics[i].creationDate, postedBy: topics[i].postedBy, latestPost: {
                                     postDate: topics[i].posts[topics[i].posts.length - 1].postDate, postedBy: topics[i].posts[topics[i].posts.length - 1].postedBy},
                                 postCount: topics[i].posts.length}
                     );
@@ -138,7 +139,7 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
                 availablePages: Math.ceil(topics.length / perPageLimit)
             };
             res.json(dataToSend);
-        }
+        }}
     });
 });
 

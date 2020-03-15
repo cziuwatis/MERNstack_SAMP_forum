@@ -20,6 +20,8 @@ export default class Subforum extends Component
             description: "",
             topics: [],
             createModal: false,
+            editModal: false,
+            editData: [],
             currentPage: this.props.match.params.page ? this.props.match.params.page : 0,
             availablePages: 1,
             sortBy: 'latestPost'
@@ -27,7 +29,7 @@ export default class Subforum extends Component
         this.updateTopics();
     }
 
-    toggleModal = e => {
+    toggleCreateModal = e => {
         this.setState({createModal: !this.state.createModal});
     }
 
@@ -85,21 +87,37 @@ export default class Subforum extends Component
                 .catch((error) => console.log(error));
     }
 
+    toggleEditModal = e => {
+        this.setState({editModal: !this.state.editModal});
+    }
+    
+    openEditModal = (e, data)=>{
+        this.setState({editModal: true, editData: data});
+    }
+    
+    editTopic = (data) => {
+        console.log(data);
+        axios.put('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/edit_topic', data)
+                .then(res => this.updateTopics())
+                .catch((error) => console.log(error));
+        
+    }
     render() {
         return (
                 <div id="subforum">
                     <div id="ag_subforum_topic_content">
-                        {this.state.createModal ? <CreateTopicModal createTopic={this.createTopic} closeModal={this.toggleModal}/> : null}
+                        {this.state.createModal ? <CreateTopicModal modalTitle={"Create topic in Subforum"} createTopic={this.createTopic} closeModal={this.toggleCreateModal}/> : null}
+                        {this.state.editModal ? <CreateTopicModal data={this.state.editData} modalTitle={"Edit topic in Subforum"} createTopic={this.editTopic} closeModal={this.toggleEditModal}/> : null}
                         <div id="ag_subforum_topic_header">
                             <h4>{this.state.title}</h4>
                             <p>{this.state.description}</p>
                         </div>
                         <ul id="ag_subforum_topics">
                             <li className="ag_subforum_panel">
-                                <span onClick={this.toggleModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
+                                <span onClick={this.toggleCreateModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
                             </li>
                             <Pagination enableSort={true} sortBy={this.sortBy} goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
-                            {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} removeTopic={this.deleteTopic}/>)}
+                            {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} editTopic={this.openEditModal} removeTopic={this.deleteTopic}/>)}
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                         </ul>
                     </div>

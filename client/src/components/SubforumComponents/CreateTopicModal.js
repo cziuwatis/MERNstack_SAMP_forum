@@ -9,8 +9,9 @@ export default class CreateTopicModal extends Component
     {
         super(props);
         this.state = {
-            title: "Topic title here",
-            content: "<p>Topic content goes here!</p>"
+            title: this.props.data ? this.props.data.title : "Topic title here",
+            content: this.props.data ? this.props.data.content : "<p>Topic content goes here!</p>",
+            _id: this.props.data ? this.props.data._id : null
         };
     }
 
@@ -51,7 +52,7 @@ export default class CreateTopicModal extends Component
             return false;
         } else {
 
-            this.props.createTopic({title: this.state.title, content: this.state.content});
+            this.props.createTopic({title: this.state.title, content: this.state.content, _id: this.state._id});
         }
     }
 
@@ -65,7 +66,7 @@ export default class CreateTopicModal extends Component
         return (
                 <div className="ag_create_topic_modal_container">
                     <form onSubmit={this.confirmTopic} className="ag_create_topic_modal">
-                        <h3 className="ag_create_topic_header">Create topic in Subforum</h3>
+                        <h3 className="ag_create_topic_header">{this.props.modalTitle}</h3>
                         <label>Topic Title</label>
                         <input value={this.state.title} onChange={this.handleTitleChange} className="ag_create_topic_title" type="text"/>
                         <hr/>

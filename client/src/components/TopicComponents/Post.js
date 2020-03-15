@@ -12,9 +12,18 @@ export default class Post extends Component
         this.state = {
             content: this.props.post.content,
             postDate: this.props.post.postDate,
-            postedBy: this.props.post.postedBy
+            postedBy: this.props.post.postedBy,
+            contextMenuOpen: false
         }
     }
+    toggleContextMenu = e => {
+        this.setState({contextMenuOpen: !this.state.contextMenuOpen});
+    }
+
+    deletePost = e => {
+        this.props.removePost(this.props.post._id);
+    }
+
     render() {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let date = new Date(this.state.postDate);
@@ -28,6 +37,16 @@ export default class Post extends Component
                         <div className="ag_topic_post_header_details">
                             <span className="ag_topic_post_username"><a>User_Name</a></span>
                             <span className="ag_topic_post_datetime"><i className="fas fa-clock"></i> {postDisplayDate}</span>
+                            <div>
+                                <span className="ag_topic_post_toggle_contextual_menu" onClick={this.toggleContextMenu}>&#10247;</span>
+                                {
+                                    this.state.contextMenuOpen ?
+                                    <ul className="ag_post_edit_context_menu">
+                                        <li onClick={this.deletePost} className="ag_post_edit_context_option">Delete</li>
+                                        <li onClick={this.toggleContextMenu} className="ag_post_edit_context_option">Close</li>
+                                    </ul> : null
+                                }
+                            </div>
                         </div>
                     </div>
                     <div className="ag_topic_post_profile">

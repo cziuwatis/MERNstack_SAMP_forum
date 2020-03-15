@@ -31,7 +31,10 @@ export default class SubforumTopic extends Component
     deleteTopic = e => {
         this.props.removeTopic(e, this.props.topic._id);
     }
-
+    editTopic = e => {
+        this.closeEditContextualMenu();
+        this.props.editTopic(e, {_id: this.props.topic._id, title: this.state.title, content: this.props.topic.content});
+    }
     render() {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let date = new Date(this.state.creationDate);
@@ -58,6 +61,7 @@ export default class SubforumTopic extends Component
                             this.state.contextMenuOpen ?
                                     <ul className="ag_subforum_topic_edit_context_menu">
                                         <li onClick={this.deleteTopic} className="ag_subforum_topic_edit_context_option">Delete</li>
+                                        <li onClick={this.editTopic} className="ag_subforum_topic_edit_context_option">Edit</li>
                                         <li onClick={this.closeEditContextualMenu} className="ag_subforum_topic_edit_context_option">Close</li>
                                     </ul>
                                     : null
