@@ -24,6 +24,12 @@ export default class Register extends Component
         alert(error);
     }
 
+    register(){
+        sessionStorage.loggedIn = true;
+        sessionStorage.accessLevel = 1;
+        this.setState({loggedIn: true});
+    }
+
     handleSubmit = e =>
     {
         e.preventDefault();
@@ -34,7 +40,7 @@ export default class Register extends Component
             const {username, email, password} = this.state;
             axios.post('http://localhost:4000/users/register', {username: username.trim(), email: email.trim(), password: password})
                     .then(res => !res.data.error ?
-                                this.setState({loggedIn: true})
+                                this.register()
                                 : this.handleError(res.data.error))
                     .catch((error) => console.log(error));
         } else // invalid inputs in form
@@ -126,7 +132,8 @@ export default class Register extends Component
     render() {
         if (sessionStorage.loggedIn === 'true' || this.state.loggedIn == true) {
             sessionStorage.loggedIn = 'true';
-            return <Redirect to={'/'}/>
+            window.location.pathname = '/';
+            //return <Redirect to={'/'}/>
         }
         let usernameErrors = this.validateUsername();
         let emailErrors = this.validateEmail();
@@ -134,7 +141,6 @@ export default class Register extends Component
         let confirmedPasswordErrors = this.validateConfirmedPassword();
         return (
                 <div id="ag_registration">
-                    {console.log("render")}
                     <form onSubmit={this.handleSubmit} autoComplete="off" id="ag_registration_form">
                         <h2 className='ag_registration_title'>Register</h2>
                         <div className='ag_registration_inputs_container'>

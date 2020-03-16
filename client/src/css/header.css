@@ -42,11 +42,11 @@
           border-radius: 5px; }
           #ag_header #ag_top_header ul li a i, #ag_header #ag_top_header ul li a img {
             margin-right: 5px; }
-          #ag_header #ag_top_header ul li a:hover {
+          #ag_header #ag_top_header ul li a:hover, #ag_header #ag_top_header ul li a.ag_active_header {
             background-color: #594455;
             box-shadow: black 0px 4px 7px;
             transition-duration: .3s; }
-            #ag_header #ag_top_header ul li a:hover i {
+            #ag_header #ag_top_header ul li a:hover i, #ag_header #ag_top_header ul li a.ag_active_header i {
               color: #758e4f;
               transition-duration: .1s; }
       #ag_header #ag_top_header ul #ag_header_community ul {
@@ -78,7 +78,7 @@
         position: relative;
         cursor: pointer; }
         #ag_header #ag_top_header ul #ag_user_header_profile .ag_top_header_dropdown .ag_top_header_dropdown_content {
-          display: none;
+          animation: show_nice .3s;
           position: absolute;
           background-color: #758e4f;
           width: 90%;

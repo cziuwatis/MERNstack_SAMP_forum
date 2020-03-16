@@ -48,7 +48,7 @@
                     i, img{
                         margin-right: 5px;
                     }
-                    &:hover{
+                    &:hover, &.ag_active_header{
                         background-color: $secondary-color;
                         box-shadow:black 0px 4px 7px;
                         i{
@@ -101,7 +101,7 @@
                     position: relative;
                     cursor: pointer;
                     .ag_top_header_dropdown_content{
-                        display: none;
+                        animation: show_nice .3s;
                         position: absolute;
                         background-color: $tertiary-color;
                         width: 90%;

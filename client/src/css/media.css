@@ -105,6 +105,9 @@
   #ag_registration #ag_registration_form {
     flex-basis: 100%; }
 
+  #ag_login #ag_login_form {
+    flex-basis: 100%; }
+
   #topic #ag_topic_content {
     flex-basis: 100%; }
     #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header {

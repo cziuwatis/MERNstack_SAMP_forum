@@ -31,9 +31,6 @@ let sha512 = function (password, salt) {
 function saltHashPassword(userpassword, salt) {
     //let salt = genRandomString(32); /** Gives us salt of length 16 */
     let passwordData = sha512(userpassword, salt);
-    console.log('UserPassword = ' + userpassword);
-    console.log('Passwordhash = ' + passwordData.passwordHash);
-    console.log('nSalt = ' + passwordData.salt);
     return passwordData.passwordHash;
 }
 mongoose.set('useFindAndModify', false);
@@ -109,7 +106,6 @@ router.route('/get_user/:id').get((req, res) =>
 
 
 
-// Add new record
 router.route('/register').post((req, res) =>
         {
             console.log("hey");
@@ -151,6 +147,27 @@ router.route('/register').post((req, res) =>
 
         });
 
+
+
+router.route('/login').post((req, res) =>{
+    userSchema.findOne({email: req.body.email}, (error, user)=>{
+       if (error){
+           res.json(error);
+       }else{
+           if (user){
+               let salt = user.salt;
+               if (user.password === saltHashPassword(req.body.password, salt)){
+                   //req.session.user = {accessLevel: 1};
+                   res.json({valid: true, accessLevel: user.role});
+               }else{
+                   res.json({valid: false});
+               }
+           }else{
+               res.json({valid: false});
+           }
+       }
+    });
+});
 
 // Update one record
 router.route('/update_user/:id').put((req, res, next) =>

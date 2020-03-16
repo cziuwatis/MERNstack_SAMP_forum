@@ -1,11 +1,98 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 16-Mar-2020, 12:47:26
-    Author     : andrz
-*/
+@keyframes show_nice {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+#ag_login {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-basis: 100%; }
+  #ag_login #ag_login_form {
+    animation: show_nice .3s;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: white;
+    box-shadow: 0px 0px 10px black;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    transition-duration: .3s;
+    flex-basis: 55%; }
+    #ag_login #ag_login_form .ag_login_title {
+      flex-basis: 100%;
+      margin: 0;
+      padding: 10px;
+      background-color: #594455;
+      color: white;
+      border-bottom: 4px solid #758e4f;
+      border-left: 10px solid #758e4f;
+      background-image: url(../img/backgroundcityedit1.png);
+      background-size: cover;
+      background-position-y: 55%;
+      background-repeat: no-repeat; }
+    #ag_login #ag_login_form .ag_login_inputs_container {
+      flex-basis: 80%;
+      padding: 40px;
+      padding-top: 0px;
+      margin: 20px;
+      border-color: #f6f6f6;
+      border-style: solid;
+      border-width: 2px;
+      border-top: none;
+      border-bottom: none;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center; }
+      #ag_login #ag_login_form .ag_login_inputs_container label {
+        color: #758e4f;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-shadow: 0px 0px 1px #758e4f; }
+      #ag_login #ag_login_form .ag_login_inputs_container .ag_login_input {
+        padding: 5px;
+        border: none;
+        font-family: inherit;
+        text-align: center;
+        border-style: solid;
+        border-width: 2px;
+        border-color: white;
+        border-bottom-color: #816c7d;
+        border-bottom-width: 4px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        transition-duration: .3s; }
+        #ag_login #ag_login_form .ag_login_inputs_container .ag_login_input:focus {
+          border-color: #758e4f;
+          transition-duration: .3s; }
+    #ag_login #ag_login_form .ag_login_buttons_container {
+      flex-basis: 100%;
+      justify-content: center;
+      display: flex; }
+    #ag_login #ag_login_form .ag_login_error_container {
+      animation: show_nice .3s linear;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #ff00007d;
+      padding: 3px;
+      transition-duration: .3s; }
+      #ag_login #ag_login_form .ag_login_error_container .ag_login_error {
+        padding: 5px;
+        animation: show_nice .3s;
+        flex-basis: 100%;
+        color: white;
+        text-shadow: 0px 0px 1px black;
+        transition-duration: .3s; }
+
+.hide {
+  display: none !important; }
 
 /*# sourceMappingURL=login.css.map */

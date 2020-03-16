@@ -6,29 +6,47 @@ export default class Header extends Component
     constructor(props)
     {
         super(props);
+        this.state = {
+            profileContextOpen: false
+        };
     }
+
+    toggleContext = e => {
+        this.setState({profileContextOpen: !this.state.profileContextOpen});
+    }
+    
+    logOut = e => {
+        sessionStorage.loggedIn = 'false';
+        this.setState({profileContextOpen: false});
+    }
+
     render() {
         return (
                 <header id="ag_header">
                     <nav id="ag_top_header">
                         <ul>
-                        <li><Link to="/"><i className="fas fa-warehouse"></i> Forum</Link></li>
+                            <li><Link to="/"><i className="fas fa-warehouse"></i> Forum</Link></li>
                             <li id="ag_header_community">
                                 <a href="#"><i className="fas fa-users"></i> Community</a>
                             </li>
-                            <li id="ag_user_header_profile">
-                                <div className="ag_top_header_dropdown">
-                                    <a>
-                                        <img id="ag_header_avatar" src={"/img/profiles/profile.png"} alt="profile_picture"/>
-                                        Profile_Name
-                                        <i className="fas fa-caret-down"></i>
-                                    </a>
-                                    <div className="ag_top_header_dropdown_content">
-                                        <a href="#">Settings</a>
-                                        <a href="#">Logout</a>
-                                    </div>
-                                </div>
-                            </li>
+                            {
+                                sessionStorage.loggedIn === 'true' ?
+                                    <li id="ag_user_header_profile">
+                                        <div className="ag_top_header_dropdown">
+                                            <a className={this.state.profileContextOpen ? "ag_active_header" : ""} onClick={this.toggleContext}>
+                                                <img id="ag_header_avatar" src={"/img/profiles/profile.png"} alt="profile_picture"/>
+                                                Profile_Name
+                                                <i className="fas fa-caret-down"></i>
+                                            </a>
+                                            {
+                                                            this.state.profileContextOpen ? <div className="ag_top_header_dropdown_content">
+                                                                <a href="#">Settings</a>
+                                                                <a onClick={this.logOut} >Logout</a>
+                                                            </div> : null
+                                            }
+                                        </div>
+                                    </li> : <li><Link to="/register">Register</Link><Link to="/login">Login</Link></li>
+                            }
                         </ul>
                     </nav>
                     <div id="ag_header_logo">
