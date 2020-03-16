@@ -90,17 +90,16 @@ export default class Subforum extends Component
     toggleEditModal = e => {
         this.setState({editModal: !this.state.editModal});
     }
-    
-    openEditModal = (e, data)=>{
+
+    openEditModal = (e, data) => {
         this.setState({editModal: true, editData: data});
     }
-    
+
     editTopic = (data) => {
         console.log(data);
         axios.put('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/edit_topic', data)
                 .then(res => this.updateTopics())
                 .catch((error) => console.log(error));
-        
     }
     render() {
         return (
@@ -114,8 +113,13 @@ export default class Subforum extends Component
                         </div>
                         <ul id="ag_subforum_topics">
                             <li className="ag_subforum_panel">
-                                <span onClick={this.toggleCreateModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
+                                {
+                                    sessionStorage.accessLevel > 0 ?
+                                    <span onClick={this.toggleCreateModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
+                                            : <Link to='/' className="ag_subforum_create_topic_button ag_btn ag_common_btn">Login</Link>
+                                }
                             </li>
+                
                             <Pagination enableSort={true} sortBy={this.sortBy} goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                             {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} editTopic={this.openEditModal} removeTopic={this.deleteTopic}/>)}
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>

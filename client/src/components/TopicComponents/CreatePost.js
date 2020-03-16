@@ -38,6 +38,10 @@ export default class CreatePost extends Component
     }
 
     render() {
+        let config = {
+            toolbar: ['bold', 'italic', 'link', '|', '|', 'undo', 'redo', '|', 'bulletedList', 'numberedList', 'blockQuote'],
+            height: 200
+        };
         return (
                 <li className="ag_create_post_container">
                 <CKEditor
@@ -46,14 +50,11 @@ export default class CreatePost extends Component
                     onChange={this.handleContentChange}
                     editor={ classicEditor }
                     data={this.state.content}
-                    config={ {
-                                toolbar: ['bold', 'italic', 'link', '|', '|', 'undo', 'redo', '|', 'bulletedList', 'numberedList', 'blockQuote'],
-                                height: 200
-                    } }
+                    config={ config}
                     />
                 <span onClick={this.confirmPost} className="ag_btn ag_common_btn ag_create_post_button">Create Post</span>
                 </li>
-                            );
-                }
-
+                );
     }
+
+}

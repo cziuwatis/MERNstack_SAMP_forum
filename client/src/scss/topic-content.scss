@@ -44,6 +44,18 @@
             margin-top: 20px;
             flex-basis: 100%;
         }
+        a{
+            border-bottom: 1px solid white;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            transition-duration: .3s;
+            cursor: pointer;
+            &:hover{
+                transition-duration: .3s;
+                color: $tertiary-color;
+                border-color: $tertiary-color;
+            }
+        }
     }
     #ag_topic_posts{
         margin: 0;
@@ -116,6 +128,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 flex-basis: 100%;
+                align-items: center;
             }
         }
         .ag_topic_post_profile, .ag_topic_post_content{
@@ -177,6 +190,11 @@
         justify-content: center;
         align-items: center;
         padding: 10px;
+        .ag_create_post_login{
+            flex-basis: 100%;
+            text-align: center;
+            font-weight: bold;
+        }
         .ck-editor{
             flex-basis: 100%;
             .ck-editor__editable_inline{

@@ -53,9 +53,12 @@ export default class Forum extends Component
                 <div id="forum">
                     <div id="ag_main_content">
                         <ul>
-                            <li className="ag_forum_control">
-                                <span onClick={this.addSubforum} className="ag_btn ag_common_btn">Add subforum</span>
-                            </li>
+                            {
+                                sessionStorage.accessLevel > 3 ?
+                                    <li className="ag_forum_control">
+                                        <span onClick={this.addSubforum} className="ag_btn ag_common_btn">Add subforum</span>
+                                    </li> : null
+                            }
                             {this.state.subforums.map((subforum) => <ForumSubforum ref={subforum._id} key={subforum._id} subforum={subforum} removeSubforum={this.removeSubforum}/>)}
                         </ul>
                     </div>

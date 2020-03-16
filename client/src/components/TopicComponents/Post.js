@@ -37,16 +37,19 @@ export default class Post extends Component
                         <div className="ag_topic_post_header_details">
                             <span className="ag_topic_post_username"><a>User_Name</a></span>
                             <span className="ag_topic_post_datetime"><i className="fas fa-clock"></i> {postDisplayDate}</span>
-                            <div>
-                                <span className="ag_topic_post_toggle_contextual_menu" onClick={this.toggleContextMenu}>&#10247;</span>
-                                {
-                                    this.state.contextMenuOpen ?
-                                    <ul className="ag_post_edit_context_menu">
-                                        <li onClick={this.deletePost} className="ag_post_edit_context_option">Delete</li>
-                                        <li onClick={this.toggleContextMenu} className="ag_post_edit_context_option">Close</li>
-                                    </ul> : null
-                                }
-                            </div>
+                            {
+                                sessionStorage.accessLevel > 3 ?
+                                    <div>
+                                        <span className="ag_topic_post_toggle_contextual_menu" onClick={this.toggleContextMenu}>&#10247;</span>
+                                        {
+                                                        this.state.contextMenuOpen ?
+                                                            <ul className="ag_post_edit_context_menu">
+                                                                <li onClick={this.deletePost} className="ag_post_edit_context_option">Delete</li>
+                                                                <li onClick={this.toggleContextMenu} className="ag_post_edit_context_option">Close</li>
+                                                            </ul> : null
+                                        }
+                                    </div> : null
+                            }
                         </div>
                     </div>
                     <div className="ag_topic_post_profile">

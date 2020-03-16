@@ -37,7 +37,7 @@ import  { Redirect } from 'react-router-dom'
     updatePosts() {
         axios.get('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/" + this.props.match.params.top_id + "/" + this.state.currentPage)
                 .then(res => !res.data.error ? this.setState({posts: res.data.topic.posts, currentPage: res.data.currentPage, availablePages: res.data.availablePages, subforumTitle: res.data.subforum.title, title: res.data.topic.title, creationDate: res.data.topic.creationDate, postedBy: res.data.topic.postedBy}) : res.data.error.includes('Posts not found for specified topic') ? this.setState({availablePages: -1}) : console.log(res.data.error))
-                .catch((error) =>  console.log(error));
+                .catch((error) => console.log(error));
     }
     goToPage = (e, page) => {
         if (page > this.state.availablePages || page < 0) {
@@ -83,7 +83,11 @@ import  { Redirect } from 'react-router-dom'
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                             {this.state.posts.map((post) => <Post key={post._id} removePost={this.removePost} post={post}/>)}
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
-                            <CreatePost createPost={this.createPost}/>
+                            {
+                                sessionStorage.accessLevel > 0 ?
+                                    <CreatePost createPost={this.createPost}/>
+                                        : <li className="ag_create_post_container"><span className="ag_create_post_login">You must be logged in to be able to post</span><Link to='/login' className="ag_btn ag_common_btn ag_create_post_button">Login</Link></li>
+                            }
                         </ul>
                     </div>
                 </div>

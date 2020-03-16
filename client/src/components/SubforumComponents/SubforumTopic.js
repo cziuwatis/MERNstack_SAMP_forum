@@ -55,18 +55,21 @@ export default class SubforumTopic extends Component
                             <li>{latestPostDate}</li>
                         </ul>
                     </div>
-                    <div className="ag_subforum_topic_edit_container">
-                        <span onClick={this.toggleContextMenu}>&#10247;</span>
-                        {
-                            this.state.contextMenuOpen ?
-                                    <ul className="ag_subforum_topic_edit_context_menu">
-                                        <li onClick={this.deleteTopic} className="ag_subforum_topic_edit_context_option">Delete</li>
-                                        <li onClick={this.editTopic} className="ag_subforum_topic_edit_context_option">Edit</li>
-                                        <li onClick={this.closeEditContextualMenu} className="ag_subforum_topic_edit_context_option">Close</li>
-                                    </ul>
-                                    : null
-                        }
-                    </div>
+                    {
+                        sessionStorage.accessLevel > 3 ?
+                                    <div className="ag_subforum_topic_edit_container">
+                                        <span onClick={this.toggleContextMenu}>&#10247;</span>
+                                        {
+                                                this.state.contextMenuOpen ?
+                                                            <ul className="ag_subforum_topic_edit_context_menu">
+                                                                <li onClick={this.deleteTopic} className="ag_subforum_topic_edit_context_option">Delete</li>
+                                                                <li onClick={this.editTopic} className="ag_subforum_topic_edit_context_option">Edit</li>
+                                                                <li onClick={this.closeEditContextualMenu} className="ag_subforum_topic_edit_context_option">Close</li>
+                                                            </ul>
+                                                        : null
+                                        }
+                                    </div> : null
+                    }
                 </li>
                 );
     }

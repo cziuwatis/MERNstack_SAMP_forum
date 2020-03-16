@@ -66,7 +66,7 @@ export default class Login extends Component
                             <input name="password" value={this.state.password} onChange = {this.handleChange} className='ag_login_input' type='password' placeholder='Enter your password here'/>
                         </div>
                         <div className='ag_login_buttons_container'>
-                            <button onClick={this.handleSubmit} className='ag_btn ag_common_btn'>Register</button>
+                            <button onClick={this.handleSubmit} className='ag_btn ag_common_btn'>Login</button>
                         </div>
                     </form>
                 </div>

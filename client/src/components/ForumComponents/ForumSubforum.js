@@ -17,7 +17,7 @@ export default class ForumSubforum extends Component
             beforeEditTitle: this.props.subforum.title,
             topicEditMode: false
         };
-    };
+    }
     
     toggleEditMode = e =>{
         e.target.classList.toggle("active");
@@ -25,13 +25,15 @@ export default class ForumSubforum extends Component
     }
     
     enableEdit = e=>{
-        
-        this.setState({edit: true, beforeEditTitle: this.state.title});
-    };
+        if (sessionStorage.accessLevel > 3)
+        {
+            this.setState({edit: true, beforeEditTitle: this.state.title});
+        }
+    }
     
     cancelEdit = e =>{
         this.setState({edit: false, title: this.state.beforeEditTitle});
-    };
+    }
 
     confirmEdit = e =>{
         let finalTitle = this.trimSpaces(this.state.title).trim();
@@ -42,7 +44,7 @@ export default class ForumSubforum extends Component
                .catch((error) => console.log(error));
             this.setState({edit: false, title: finalTitle});
         }
-    };
+    }
     updateTopics(){
         setTimeout(() => {
             axios.get('http://localhost:4000/subforum/'+this.props.subforum._id)
@@ -56,12 +58,12 @@ export default class ForumSubforum extends Component
         }else{
         this.setState({title: e.target.value});
         }
-    };
+    }
     pasteAsPlainText = event => {
         event.preventDefault();
         const text = event.clipboardData.getData('text/plain');
         document.execCommand('insertHTML', false, text);
-    };
+    }
     disableNewlines = event => {
       const keyCode = event.keyCode || event.which
       if (keyCode === 13) {
@@ -69,12 +71,12 @@ export default class ForumSubforum extends Component
           this.confirmEdit();
         if (event.preventDefault) event.preventDefault()
       }
-    };
+    }
     highlightAll = () => {
         setTimeout(() => {
             document.execCommand('selectAll', false, null)
         }, 0)
-    };
+    }
     trimSpaces = string => {
         console.log(string);
         return string
@@ -83,7 +85,7 @@ export default class ForumSubforum extends Component
           .replace(/&gt;/g, '>')
           .replace(/&lt;/g, '<')
           .replace(/<br>/g, '')
-    };
+    }
     
     addTopic = e =>{
         axios.put('http://localhost:4000/subforum/'+this.props.subforum._id+'/new_subforum_topic')
@@ -117,11 +119,14 @@ export default class ForumSubforum extends Component
                             }
                         </h3>
                     </div>
-                    <div className="ag_subforum_control">
-                        <span onClick={e => this.props.removeSubforum(this.props.subforum._id)} className="ag_btn ag_common_btn">Remove subforum</span>
-                        <span onClick={this.toggleEditMode} className="ag_btn ag_common_btn">Edit</span>            
-                        <span onClick={this.addTopic} className="ag_btn ag_common_btn">Add topic</span>
-                    </div>
+                    {
+                        sessionStorage.accessLevel > 3 ?
+                        <div className="ag_subforum_control">
+                            <span onClick={e => this.props.removeSubforum(this.props.subforum._id)} className="ag_btn ag_common_btn">Remove subforum</span>
+                            <span onClick={this.toggleEditMode} className="ag_btn ag_common_btn">Edit</span>            
+                            <span onClick={this.addTopic} className="ag_btn ag_common_btn">Add topic</span>
+                        </div> : null
+                    }
                     <ul>
                         {this.state.topics.map((topic) => <ForumSubforumTopic key={topic._id} editMode={this.state.topicEditMode} subforum_id={this.props.subforum._id} topic={topic} />)}
                     </ul>
