@@ -8,6 +8,8 @@ import Topic from "./components/Topic";
 import Subforum from "./components/Subforum";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 
 if (typeof sessionStorage.loggedIn === 'undefined')
@@ -25,6 +27,8 @@ export default class App extends Component
                     <Header/>
                     <Switch>
                     <Route exact path='/' component={Forum}/>
+                    <Route exact path='/register' component={Register}/>
+                    <Route exact path='/login' component={Login}/>
                     <Route exact path='/topic/:id' component={Topic}/>
                     <Route exact path='/subforum/:sub_id/:subt_id' component={Subforum}/>
                     <Route exact path='/subforum/:sub_id/:subt_id/page/:page' component={Subforum}/>

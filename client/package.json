@@ -30,6 +30,8 @@
     "postcss-loader": "^3.0.0",
     "raw-loader": "^3.1.0",
     "react": "^16.9.0",
+    "react-alert": "^7.0.0",
+    "react-alert-template-basic": "^1.0.0",
     "react-bootstrap": "^1.0.0-beta.11",
     "react-confirm-alert": "^2.6.1",
     "react-contenteditable": "^3.3.3",

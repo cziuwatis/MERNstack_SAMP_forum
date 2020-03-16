@@ -5,7 +5,6 @@ let bodyParser = require('body-parser');
 let dbConfig = require('./config/db');
 
 // Routers
-const carsRouter = require('../server/routes/cars');
 const usersRouter = require('../server/routes/users');
 const forumRouter = require('../server/routes/forum');
 const subforumRouter = require('../server/routes/subforum');
@@ -26,7 +25,6 @@ const server = app.listen(port, () => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
-app.use('/cars', carsRouter);
 app.use('/users', usersRouter);
 app.use('/forum', forumRouter);
 app.use('/subforum', subforumRouter);
