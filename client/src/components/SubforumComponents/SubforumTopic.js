@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Link} from 'react-router-dom';
-import axios from 'axios';
 
 
 export default class SubforumTopic extends Component
@@ -44,7 +43,7 @@ export default class SubforumTopic extends Component
         return (
                 <li className="ag_subforum_topic">
                     <div className="ag_subforum_topic_details">
-                        <h4><Link to={"/subforum/" + this.props.subforum_id + "/" + this.props.subforum_topic_id + "/topic/" + this.props.topic._id}>{this.state.title}</Link></h4>
+                        <h4><Link to={"/subforum/" + this.props.subforum_id + "/" + this.props.subforum_topic_id + "/topic/" + this.props.topic._id}>{this.props.topic.title}</Link></h4>
                         <p>By <a href="#">User_Name</a>, on {creationDisplayDate}</p>
                     </div>
                     <div className="ag_subforum_topic_statistics"><span><i className="far fa-comment-dots"></i> {this.props.topic.postCount}</span></div>

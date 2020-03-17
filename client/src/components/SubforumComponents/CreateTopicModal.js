@@ -55,7 +55,13 @@ export default class CreateTopicModal extends Component
             this.props.createTopic({title: this.state.title, content: this.state.content, _id: this.state._id});
         }
     }
-
+//    componentDidUpdate(prevProps) {
+//        
+//    console.log(prevProps.data);
+//        if (this.props.data.title !== prevProps.data.title || this.props.data.content !== prevProps.data.content) {
+//            this.setState({title: this.props.data.title, content: this.props.data.content});
+//        }
+//    }
     render() {
 
         /**

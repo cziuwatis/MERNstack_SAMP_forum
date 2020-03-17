@@ -41,6 +41,7 @@ export default class ForumSubforumTopic extends Component
         let finalTitle = this.trimSpaces(this.state[editField]).trim();
         if (finalTitle.length > 0)
         {
+            axios.defaults.withCredentials = true;
             axios.put('http://localhost:4000/subforum/'+ this.props.subforum_id+'/update_subforum_topic/' + this.props.topic._id, {[editField]: finalTitle})
                .then(res => console.log(res.data))
                .catch((error) => console.log(error));
@@ -92,7 +93,6 @@ export default class ForumSubforumTopic extends Component
                 tempStates[i] = false;
             }
             this.setState({edit: tempStates});
-            console.log("i'm here");
         }
     }
     

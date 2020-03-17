@@ -37,30 +37,6 @@ mongoose.set('useFindAndModify', false);
 
 let userSchema = require(`../models/user`);
 
-//
-// validate one record
-router.route('/validate_user/').post((req, res) =>
-        {
-            console.log("validating user");
-            userSchema.find({email: req.body.email}, (error, data) =>
-            {
-                if (error)
-                {
-                    return next(error);
-                } else
-                {
-                    if (data.length > 0 && req.body.password === data[0].password) {
-                        //console.log(req.body.password);
-                        req.session.user = {accessLevel: 1};
-                        res.json({valid: true});
-                    } else {
-                        res.json({valid: false});
-                    }
-                    // res.json(data);
-                }
-            });
-
-        });
 
 // read all records
 router.route('/').get((req, res) =>
@@ -105,13 +81,12 @@ router.route('/get_user/:id').get((req, res) =>
 
 
 
-
+//register user
 router.route('/register').post((req, res) =>
         {
-            console.log("hey");
             let username = req.body.username.trim();
             let password = req.body.password;
-            let email = req.body.email.trim();
+            let email = req.body.email.trim().toLowerCase();
             let error = "";
             if (username.length < 3 || username.length > 20 || /[^0-9a-zA-Z _-]+/.test(username)) {
                 error = "Invalid username -> Needs to be with length between 3-20 characters and only with special characters like _ or -";
@@ -119,28 +94,24 @@ router.route('/register').post((req, res) =>
                 error = "Invalid email";
             }
             if (error) {
-                console.log(error);
                 return res.json({error: error});
             }
             userSchema.findOne({email: email}, (error, data) => {
                 if (data !== null) {
-                    console.log("email used");
                     return res.json({error: "Email is already in use, please use another one or try logging in."});
                 } else {
-                        console.log("sup");
-                        let salt = genRandomString(32);
-                        user = {username: username, email: email, password: saltHashPassword(password, salt), salt: salt};
-                       // user.password = await saltHashPassword(password, salt);
-                        console.log(user.password);
-                        userSchema.create(user, (error) =>
+                    let salt = genRandomString(32);
+                    user = {username: username, email: email, password: saltHashPassword(password, salt), salt: salt};
+                    // user.password = await saltHashPassword(password, salt);
+                    userSchema.create(user, (error) =>
+                    {
+                        if (error)
                         {
-                            if (error)
-                            {
-                                return res.json(error);
-                            }
-                        });
-                        //req.session.user = {accessLevel: 1};
-                        res.json({msg:"Success!"});
+                            return res.json(error);
+                        }
+                    });
+                    req.session.user = {userId: data._id};
+                    res.json({msg: "Success!"});
                 }
             });
 
@@ -148,24 +119,24 @@ router.route('/register').post((req, res) =>
         });
 
 
-
-router.route('/login').post((req, res) =>{
-    userSchema.findOne({email: req.body.email}, (error, user)=>{
-       if (error){
-           res.json(error);
-       }else{
-           if (user){
-               let salt = user.salt;
-               if (user.password === saltHashPassword(req.body.password, salt)){
-                   //req.session.user = {accessLevel: 1};
-                   res.json({valid: true, accessLevel: user.role});
-               }else{
-                   res.json({valid: false});
-               }
-           }else{
-               res.json({valid: false});
-           }
-       }
+//login user
+router.route('/login').post((req, res) => {
+    userSchema.findOne({email: req.body.email}, (error, user) => {
+        if (error) {
+            res.json(error);
+        } else {
+            if (user) {
+                let salt = user.salt;
+                if (user.password === saltHashPassword(req.body.password, salt)) {
+                    req.session.user = {userId: user._id};
+                    res.json({valid: true, accessLevel: user.role});
+                } else {
+                    res.json({valid: false});
+                }
+            } else {
+                res.json({valid: false});
+            }
+        }
     });
 });
 

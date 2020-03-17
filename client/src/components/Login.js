@@ -25,6 +25,7 @@ export default class Login extends Component
 
     handleSubmit = e => {
         e.preventDefault();
+        axios.defaults.withCredentials = true;
         axios.post('http://localhost:4000/users/login', {email: this.state.email.trim(), password: this.state.password})
                 .then(res => !res.data.error ?
                             this.login(res.data)

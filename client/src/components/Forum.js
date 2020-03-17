@@ -17,6 +17,7 @@ export default class Forum extends Component
             subforums: [
             ]
         };
+        axios.defaults.withCredentials = true;
         axios.get('http://localhost:4000/forum/')
                 .then(res => this.setState({subforums: res.data}))
                 .catch((error) => console.log(error));
@@ -24,10 +25,12 @@ export default class Forum extends Component
     }
 
     addSubforum = e => {
+        axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/forum/new_subforum')
                 .then(res => console.log())
                 .catch((error) => console.log(error));
         setTimeout(() => {
+            axios.defaults.withCredentials = true;
             axios.get('http://localhost:4000/forum/')
                     .then(res => this.setState({subforums: res.data}))
                     .catch((error) => console.log(error))
@@ -36,6 +39,7 @@ export default class Forum extends Component
     }
     removeSubforum = id => {
         let deleteSubforum = () => {
+        axios.defaults.withCredentials = true;
             axios.delete('http://localhost:4000/forum/delete_subforum/' + id)
                     .then(res => !res.data.error ? this.setState({subforums: this.state.subforums.filter((subforum) => subforum._id !== id)}) : console.log(res.data.error))
                     .catch((error) => console.log(error));

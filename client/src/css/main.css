@@ -4753,7 +4753,8 @@ ul {
       padding-bottom: 2px;
       padding-top: 2px;
       transition-duration: .3s;
-      cursor: pointer; }
+      cursor: pointer;
+      font-weight: bold; }
       #ag_topic_content #ag_topic_header a:hover {
         transition-duration: .3s;
         color: #758e4f;

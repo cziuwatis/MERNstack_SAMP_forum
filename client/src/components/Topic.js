@@ -29,12 +29,14 @@ import  { Redirect } from 'react-router-dom'
     }
 
     createPost = data => {
+        axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/' + this.props.match.params.top_id + "/new_post", {postedBy: 0, content: data.content})
                 .then(res => !res.data.error ? this.goToPage("", parseInt(res.data.availablePages - 1)) : console.log("An error seems to have occurred"))
                 .catch((error) => console.log(error));
     }
 
     updatePosts() {
+        axios.defaults.withCredentials = true;
         axios.get('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/" + this.props.match.params.top_id + "/" + this.state.currentPage)
                 .then(res => !res.data.error ? this.setState({posts: res.data.topic.posts, currentPage: res.data.currentPage, availablePages: res.data.availablePages, subforumTitle: res.data.subforum.title, title: res.data.topic.title, creationDate: res.data.topic.creationDate, postedBy: res.data.topic.postedBy}) : res.data.error.includes('Posts not found for specified topic') ? this.setState({availablePages: -1}) : console.log(res.data.error))
                 .catch((error) => console.log(error));
@@ -44,6 +46,7 @@ import  { Redirect } from 'react-router-dom'
             //do nothing
             console.log("do nothing");
         } else {
+            axios.defaults.withCredentials = true;
             axios.get('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/" + this.props.match.params.top_id + "/" + page)
                     .then(res => !res.data.error ? this.setState({posts: res.data.topic.posts, currentPage: res.data.currentPage, availablePages: res.data.availablePages, subforumTitle: res.data.subforum.title, title: res.data.topic.title, creationDate: res.data.topic.creationDate, postedBy: res.data.topic.postedBy}) : res.data.error.includes('Posts not found for specified topic') ? this.setState({availablePages: -1}) : console.log(res.data.error))
                     .catch((error) => console.log(error));
@@ -52,6 +55,7 @@ import  { Redirect } from 'react-router-dom'
 
     removePost = id => {
         let deletePost = () => {
+            axios.defaults.withCredentials = true;
             axios.delete('http://localhost:4000/topic/delete_post/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/" + this.props.match.params.top_id + "/" + id)
                     .then(res => !res.data.error ? this.state.currentPage >= res.data.availablePages ? this.goToPage(null, res.data.availablePages - 1) : this.updatePosts() : res.data.error.includes('Posts not found for specified topic') ? this.setState({availablePages: -1}) : console.log(res.data.error))
                     .catch((error) => console.log(error));

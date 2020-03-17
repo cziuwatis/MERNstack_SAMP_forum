@@ -5,7 +5,19 @@ let router = express.Router();
 mongoose.set('useFindAndModify', false);
 
 let subforumsSchema = require(`../models/forum`);
-
+let userSchema = require(`../models/user`);
+function getUserAccessLevel(userId) {
+    userSchema.findById(userId,
+            'role',
+            (error, data) => {
+        if (error) {
+            return null;
+        } else {
+            return data.role;
+        }
+    }
+    );
+}
 
 router.route('/').get((req, res) =>
         {
@@ -24,6 +36,16 @@ router.route('/').get((req, res) =>
 
 router.route('/new_subforum').put((req, res) =>
         {
+            if (!req.session.user) {
+                console.log("no user set");
+                return res.json({error: 'User is not logged, unable to create a new post'});
+            } else if (req.session.user.userId) {
+                //check accessLevel
+                let accessLevel = getUserAccessLevel(req.session.user.userId);
+                if (accessLevel < 4) {
+                    return res.json({error: 'Insufficient permission'});
+                }
+            }
             subforumsSchema.create({title: "Subforum name"}, (error, data) =>
             {
                 if (error)
@@ -37,6 +59,16 @@ router.route('/new_subforum').put((req, res) =>
 
 router.route('/delete_subforum/:id').delete((req, res, next) =>
         {
+            if (!req.session.user) {
+                console.log("no user set");
+                return res.json({error: 'User is not logged, unable to create a new post'});
+            } else if (req.session.user.userId) {
+                //check accessLevel
+                let accessLevel = getUserAccessLevel(req.session.user.userId);
+                if (accessLevel < 4) {
+                    return res.json({error: 'Insufficient permission'});
+                }
+            }
             subforumsSchema.findByIdAndRemove(req.params.id, (error, data) =>
             {
                 if (error)
@@ -49,15 +81,24 @@ router.route('/delete_subforum/:id').delete((req, res, next) =>
             });
         });
 
-router.route('/update_subforum/:id').put((req, res, next) => 
+router.route('/update_subforum/:id').put((req, res, next) =>
 {
-    subforumsSchema.findByIdAndUpdate(req.params.id, {$set: {title: req.body.title}}, (error, data) => 
+    if (!req.session.user) {
+        console.log("no user set");
+        return res.json({error: 'User is not logged, unable to create a new post'});
+    } else if (req.session.user.userId) {
+        //check accessLevel
+        let accessLevel = getUserAccessLevel(req.session.user.userId);
+        if (accessLevel < 4) {
+            return res.json({error: 'Insufficient permission'});
+        }
+    }
+    subforumsSchema.findByIdAndUpdate(req.params.id, {$set: {title: req.body.title}}, (error, data) =>
     {
-        if (error) 
+        if (error)
         {
             res.json(error);
-        } 
-        else 
+        } else
         {
             res.json(data);
         }

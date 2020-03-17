@@ -39,6 +39,7 @@ export default class ForumSubforum extends Component
         let finalTitle = this.trimSpaces(this.state.title).trim();
         if (finalTitle.length > 0)
         {
+            axios.defaults.withCredentials = true;
             axios.put('http://localhost:4000/forum/update_subforum/' + this.props.subforum._id, {title: finalTitle})
                .then(res => console.log(res.data))
                .catch((error) => console.log(error));
@@ -47,6 +48,7 @@ export default class ForumSubforum extends Component
     }
     updateTopics(){
         setTimeout(() => {
+            axios.defaults.withCredentials = true;
             axios.get('http://localhost:4000/subforum/'+this.props.subforum._id)
                     .then(res => this.setState({topics: res.data.topics}))
                     .catch((error) => console.log(error));
@@ -88,6 +90,7 @@ export default class ForumSubforum extends Component
     }
     
     addTopic = e =>{
+            axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/subforum/'+this.props.subforum._id+'/new_subforum_topic')
                 .then(res => console.log(res.data))
                 .catch((error) => console.log(error));

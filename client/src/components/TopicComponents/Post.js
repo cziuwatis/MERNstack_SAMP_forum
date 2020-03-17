@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Link} from 'react-router-dom';
-import axios from 'axios';
 import ReactHtmlParser from 'react-html-parser';
 
 export default class Post extends Component

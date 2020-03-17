@@ -24,7 +24,7 @@ export default class Register extends Component
         alert(error);
     }
 
-    register(){
+    register() {
         sessionStorage.loggedIn = true;
         sessionStorage.accessLevel = 1;
         this.setState({loggedIn: true});
@@ -38,6 +38,7 @@ export default class Register extends Component
         if (Object.keys(formInputsState).every(index => formInputsState[index]))
         {
             const {username, email, password} = this.state;
+            axios.defaults.withCredentials = true;
             axios.post('http://localhost:4000/users/register', {username: username.trim(), email: email.trim(), password: password})
                     .then(res => !res.data.error ?
                                 this.register()
