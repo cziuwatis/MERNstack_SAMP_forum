@@ -36,7 +36,40 @@ function saltHashPassword(userpassword, salt) {
 mongoose.set('useFindAndModify', false);
 
 let userSchema = require(`../models/user`);
-
+function getUserAccessLevel(userId) {
+    userSchema.findById(userId,
+            'role',
+            (error, data) => {
+        if (error) {
+            return null;
+        } else {
+            return data.role;
+        }
+    }
+    );
+}
+function getUser(userId) {
+    userSchema.findById(userId,
+            (error, data) => {
+        if (error) {
+            return null;
+        } else {
+            return data;
+        }
+    }
+    );
+}
+function getUserByEmail(email) {
+    userSchema.findOne({email: email},
+            (error, data) => {
+        if (error) {
+            return null;
+        } else {
+            return data;
+        }
+    }
+    );
+}
 
 // read all records
 router.route('/').get((req, res) =>
@@ -101,7 +134,7 @@ router.route('/register').post((req, res) =>
                     return res.json({error: "Email is already in use, please use another one or try logging in."});
                 } else {
                     let salt = genRandomString(32);
-                    user = {username: username, email: email, password: saltHashPassword(password, salt), salt: salt};
+                    user = {username: username, email: email, password: saltHashPassword(password, salt), salt: salt, role: 1};
                     // user.password = await saltHashPassword(password, salt);
                     userSchema.create(user, (error) =>
                     {
@@ -110,8 +143,8 @@ router.route('/register').post((req, res) =>
                             return res.json(error);
                         }
                     });
-                    req.session.user = {userId: data._id};
-                    res.json({msg: "Success!"});
+                    req.session.user = {userId: getUserByEmail(email)._id};
+                    res.json({msg: "Success!", accessLevel: 1, username: username});
                 }
             });
 
@@ -129,7 +162,7 @@ router.route('/login').post((req, res) => {
                 let salt = user.salt;
                 if (user.password === saltHashPassword(req.body.password, salt)) {
                     req.session.user = {userId: user._id};
-                    res.json({valid: true, accessLevel: user.role});
+                    res.json({valid: true, accessLevel: user.role, username: user.username});
                 } else {
                     res.json({valid: false});
                 }

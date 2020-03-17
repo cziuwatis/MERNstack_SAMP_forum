@@ -27,6 +27,7 @@ export default class Register extends Component
     register() {
         sessionStorage.loggedIn = true;
         sessionStorage.accessLevel = 1;
+        sessionStorage.username = this.state.username;
         this.setState({loggedIn: true});
     }
 

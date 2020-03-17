@@ -12,8 +12,10 @@ function getUserAccessLevel(userId) {
             'role',
             (error, data) => {
         if (error) {
+            console.log(error);
             return null;
         } else {
+            console.log(data);
             return data.role;
         }
     }
@@ -102,6 +104,14 @@ router.route('/:sub_id/:subt_id/:topic_id/:page').get((req, res) =>
                         postsToSend.push(posts[i]);
                     }
                 }
+                console.log("posts");
+                console.log(posts);
+                console.log(posts.map(post => post.postedBy));
+                userSchema.find({_id: {$in: posts.map(post => post.postedBy)}}, (error, data)=>{
+                    console.log(error);
+                    console.log(data);
+                });
+                
                 topic.posts = postsToSend;
                 res.json({currentPage: req.params.page, availablePages: (Math.ceil(posts.length / perPageLimit)), topic: topic, subforum: {title: data.topics[0].title}});
             } else {
@@ -127,8 +137,11 @@ router.route('/:sub_id/:subt_id/:topic_id/new_post').put((req, res) =>
             return res.json({error: 'Insufficient permission'});
         }
     }
-    let post = {content: req.body.content, postedBy: req.body.postedBy};
-
+    else{
+        return res.json({error: "userId doesn't exist"});
+    }
+    let post = {content: req.body.content, postedBy: req.session.user.userId};
+    console.log(post);
     subforumsSchema.findOneAndUpdate({
         _id: req.params.sub_id,
         'topics._id': req.params.subt_id,

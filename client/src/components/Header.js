@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import axios from 'axios';
 import {Link} from 'react-router-dom';
 export default class Header extends Component
 {
@@ -16,8 +17,14 @@ export default class Header extends Component
     }
     
     logOut = e => {
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:4000/users/logout')
+                .then(res => console.log("logged out"))
+                .catch((error) => console.log(error));
         sessionStorage.loggedIn = 'false';
-        this.setState({profileContextOpen: false});
+        sessionStorage.accessLevel = 0;
+        sessionStorage.username = '';
+        window.location.pathname = '/';
     }
 
     render() {
@@ -35,7 +42,7 @@ export default class Header extends Component
                                         <div className="ag_top_header_dropdown">
                                             <a className={this.state.profileContextOpen ? "ag_active_header" : ""} onClick={this.toggleContext}>
                                                 <img id="ag_header_avatar" src={"/img/profiles/profile.png"} alt="profile_picture"/>
-                                                Profile_Name
+                                                {sessionStorage.username}
                                                 <i className="fas fa-caret-down"></i>
                                             </a>
                                             {

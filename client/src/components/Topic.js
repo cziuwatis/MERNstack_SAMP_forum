@@ -30,7 +30,7 @@ import  { Redirect } from 'react-router-dom'
 
     createPost = data => {
         axios.defaults.withCredentials = true;
-        axios.put('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/' + this.props.match.params.top_id + "/new_post", {postedBy: 0, content: data.content})
+        axios.put('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/' + this.props.match.params.top_id + "/new_post", {content: data.content})
                 .then(res => !res.data.error ? this.goToPage("", parseInt(res.data.availablePages - 1)) : console.log("An error seems to have occurred"))
                 .catch((error) => console.log(error));
     }
