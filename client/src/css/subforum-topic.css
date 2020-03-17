@@ -71,6 +71,7 @@
       flex-wrap: wrap;
       align-content: center; }
       #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details h4 {
+        word-wrap: anywhere;
         margin: 0;
         flex-basis: 100%; }
         #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details h4 a:hover {

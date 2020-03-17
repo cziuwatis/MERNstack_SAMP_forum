@@ -214,6 +214,15 @@
                 li{
                     flex-basis: 100%;
                     text-align: center;
+                    a{
+                        cursor: pointer;
+                        font-weight: bold;
+                        transition-duration: .3s;
+                        &:hover{
+                            color: $tertiary-color;
+                            transition-duration: .3s;
+                        }
+                    }
                 }
             }
         }

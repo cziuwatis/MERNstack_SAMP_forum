@@ -69,7 +69,8 @@
       flex-wrap: wrap;
       flex-basis: 100%;
       background-color: #594455;
-      color: white; }
+      color: white;
+      align-items: center; }
       #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_topic_post_username {
         flex-basis: 20%;
         text-align: center;
@@ -155,7 +156,8 @@
               text-align: left; }
     #ag_topic_content .ag_topic_post .ag_topic_post_content {
       flex-basis: 75%;
-      padding-left: 10px; }
+      padding-left: 10px;
+      word-wrap: anywhere; }
   #ag_topic_content .ag_create_post_container {
     flex-basis: 80%;
     display: flex;

@@ -3,7 +3,7 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 let postSchema = new mongoose.Schema(
         {
-            postedBy: {type: String},
+            postedBy: {type: mongoose.Schema.Types.ObjectId, ref:'user'},
             postDate: {type: Date, default: Date.now},
             content: {type: String}
         });
@@ -11,7 +11,7 @@ let topicSchema = new mongoose.Schema(
         {
             title: {type: String},
             creationDate: {type: Date, default: Date.now},
-            postedBy: {type: String},
+            postedBy: {type: mongoose.Schema.Types.ObjectId, ref:'user'},
             posts: [postSchema]
         });
 

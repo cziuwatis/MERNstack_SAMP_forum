@@ -23,35 +23,35 @@ function getUserAccessLevel(userId) {
 }
 //get topic content
 router.route('/:sub_id/:subt_id/:topic_id').get((req, res) =>
-{
-    subforumsSchema.findOne(
+        {
+            subforumsSchema.findOne(
+                    {
+                        _id: req.params.sub_id,
+                        'topics._id': req.params.subt_id
+                    },
+                    '$topics.title topics.$.topics',
+                    (error, data) =>
             {
-                _id: req.params.sub_id,
-                'topics._id': req.params.subt_id
-            },
-            '$topics.title topics.$.topics',
-            (error, data) =>
-    {
-        if (error)
-        {
-            res.json({error: error});
-        } else
-        {
-            let topic = "";
-            for (let i = 0; i < data.topics[0].topics.length; i++) {
-                if (data.topics[0].topics[i]._id == req.params.topic_id) {
-                    topic = data.topics[0].topics[i];
-                    break;
+                if (error)
+                {
+                    res.json({error: error});
+                } else
+                {
+                    let topic = "";
+                    for (let i = 0; i < data.topics[0].topics.length; i++) {
+                        if (data.topics[0].topics[i]._id == req.params.topic_id) {
+                            topic = data.topics[0].topics[i];
+                            break;
+                        }
+                    }
+                    res.json({topic: topic, subforum: {title: data.topics[0].title}});
                 }
-            }
-            res.json({topic: topic, subforum: {title: data.topics[0].title}});
-        }
-    });
-});
+            });
+        });
 
 //get topic content on certain page
 router.route('/:sub_id/:subt_id/:topic_id/:page').get((req, res) =>
-{
+        {
 //            subforumsSchema.findOne(
 //                    {
 //                        _id: req.params.sub_id,
@@ -76,96 +76,138 @@ router.route('/:sub_id/:subt_id/:topic_id/:page').get((req, res) =>
 //                }
 //            });
 
-    subforumsSchema.findOne(
-            {
+            subforumsSchema.findOne({
                 _id: req.params.sub_id,
                 'topics._id': req.params.subt_id
             },
-            '$topics.title topics.$.topics',
-            (error, data) =>
-    {
-        if (error)
-        {
-            res.json({error: error});
-        } else
-        {
-            let topic = "";
-            for (let i = 0; i < data.topics[0].topics.length; i++) {
-                if (data.topics[0].topics[i]._id == req.params.topic_id) {
-                    topic = data.topics[0].topics[i];
-                    break;
-                }
-            }
-            let posts = topic.posts;
-            if (posts) {
-                let postsToSend = [];
-                if (posts.length > perPageLimit * req.params.page) {
-                    for (let i = (perPageLimit * req.params.page); i < posts.length && i < (perPageLimit * req.params.page) + perPageLimit; i++) {
-                        postsToSend.push(posts[i]);
-                    }
-                }
-                console.log("posts");
-                console.log(posts);
-                console.log(posts.map(post => post.postedBy));
-                userSchema.find({_id: {$in: posts.map(post => post.postedBy)}}, (error, data)=>{
-                    console.log(error);
-                    console.log(data);
-                });
-                
-                topic.posts = postsToSend;
-                res.json({currentPage: req.params.page, availablePages: (Math.ceil(posts.length / perPageLimit)), topic: topic, subforum: {title: data.topics[0].title}});
-            } else {
-                res.json({error: "Posts not found for specified topic, topic possibly doesn't exist."});
-            }
-        }
-    });
+                    '$topics.title topics.$.topics'
+                    )
+                    .populate({
+                        path: 'topics.topics.posts.postedBy topics.topics.postedBy',
+                        model: 'user',
+                        select: 'username country postCount role',
+                        populate: {
+                            path: 'postedBy',
+                            model: 'subforum'
+                        }})
+                    .exec(function (err, data) {
+                        if (err) {
+                            return res.json(err);
+                        }
+                        console.log(data);
+                        let topic = "";
+                        for (let i = 0; i < data.topics[0].topics.length; i++) {
+                            if (data.topics[0].topics[i]._id == req.params.topic_id) {
+                                topic = data.topics[0].topics[i];
+                                break;
+                            }
+                        }
+                        let posts = topic.posts;
+                        if (posts) {
+                            let postsToSend = [];
+                            if (posts.length > perPageLimit * req.params.page) {
+                                for (let i = (perPageLimit * req.params.page); i < posts.length && i < (perPageLimit * req.params.page) + perPageLimit; i++) {
+                                    postsToSend.push(posts[i]);
+                                }
+                            }
+
+                            topic.posts = postsToSend;
+                            res.json({currentPage: req.params.page, availablePages: (Math.ceil(posts.length / perPageLimit)), topic: topic, subforum: {title: data.topics[0].title}});
+                        } else {
+                            res.json({error: "Posts not found for specified topic, topic possibly doesn't exist."});
+                        }
+
+                    });
+
+//            subforumsSchema.findOne(
+//                    {
+//                        _id: req.params.sub_id,
+//                        'topics._id': req.params.subt_id
+//                    },
+//                    '$topics.title topics.$.topics',
+//                    (error, data) =>
+//            {
+//                if (error)
+//                {
+//                    res.json({error: error});
+//                } else
+//                {
+//                    let topic = "";
+//                    for (let i = 0; i < data.topics[0].topics.length; i++) {
+//                        if (data.topics[0].topics[i]._id == req.params.topic_id) {
+//                            topic = data.topics[0].topics[i];
+//                            break;
+//                        }
+//                    }
+//                    let posts = topic.posts;
+//                    if (posts) {
+//                        let postsToSend = [];
+//                        if (posts.length > perPageLimit * req.params.page) {
+//                            for (let i = (perPageLimit * req.params.page); i < posts.length && i < (perPageLimit * req.params.page) + perPageLimit; i++) {
+//                                postsToSend.push(posts[i]);
+//                            }
+//                        }
+//                        //console.log("posts");
+//                        //console.log(posts);
+//                        //console.log(posts.map(post => post.postedBy));
+//                        userSchema.find({_id: {$in: posts.map(post => post.postedBy)}}, (error, data) => {
+//                            //  console.log(error);
+//                            //console.log(data);
+//                        });
+//
+//                        topic.posts = postsToSend;
+//                        res.json({currentPage: req.params.page, availablePages: (Math.ceil(posts.length / perPageLimit)), topic: topic, subforum: {title: data.topics[0].title}});
+//                    } else {
+//                        res.json({error: "Posts not found for specified topic, topic possibly doesn't exist."});
+//                    }
+//                }
+//            });
 
 
-});
+        });
 
 //create new post in topic
 router.route('/:sub_id/:subt_id/:topic_id/new_post').put((req, res) =>
-{
-    // let post = {_id: getNextSequenceValue("postid"), content: req.body.content, postedBy: req.body.postedBy};
-    if (!req.session.user) {
-        console.log("no user set");
-        return res.json({error: 'User is not logged, unable to create a new post'});
-    } else if (req.session.user.userId) {
-        //check accessLevel
-        let accessLevel = getUserAccessLevel(req.session.user.userId);
-        if (accessLevel < 1) {
-            return res.json({error: 'Insufficient permission'});
-        }
-    }
-    else{
-        return res.json({error: "userId doesn't exist"});
-    }
-    let post = {content: req.body.content, postedBy: req.session.user.userId};
-    console.log(post);
-    subforumsSchema.findOneAndUpdate({
-        _id: req.params.sub_id,
-        'topics._id': req.params.subt_id,
-        'topics.topics._id': req.params.topic_id
-    },
-            {$push: {'topics.$.topics.$[elem].posts': post}},
-            {
-                new : true,
-                arrayFilters: [{'elem._id': req.params.topic_id}]
-            }, (error, data) => {
-        if (error) {
-            res.json(error);
-        } else {
-            let topics = data.topics[0].topics;
-            let availablePages = 1;
-            for (let i = 0; i < topics.length; i++) {
-                if (topics[i]._id == req.params.topic_id) {
-                    availablePages = Math.ceil((topics[i].posts.length) / perPageLimit);
-                    break;
+        {
+            // let post = {_id: getNextSequenceValue("postid"), content: req.body.content, postedBy: req.body.postedBy};
+            if (!req.session.user) {
+                console.log("no user set");
+                return res.json({error: 'User is not logged, unable to create a new post'});
+            } else if (req.session.user.userId) {
+                //check accessLevel
+                let accessLevel = getUserAccessLevel(req.session.user.userId);
+                if (accessLevel < 1) {
+                    return res.json({error: 'Insufficient permission'});
                 }
+            } else {
+                return res.json({error: "userId doesn't exist"});
             }
-            res.json({msg: 'success', availablePages: availablePages});
-        }
-    });
+            let post = {content: req.body.content, postedBy: req.session.user.userId};
+            console.log(post);
+            subforumsSchema.findOneAndUpdate({
+                _id: req.params.sub_id,
+                'topics._id': req.params.subt_id,
+                'topics.topics._id': req.params.topic_id
+            },
+                    {$push: {'topics.$.topics.$[elem].posts': post}},
+                    {
+                        new : true,
+                        arrayFilters: [{'elem._id': req.params.topic_id}]
+                    }, (error, data) => {
+                if (error) {
+                    res.json(error);
+                } else {
+                    let topics = data.topics[0].topics;
+                    let availablePages = 1;
+                    for (let i = 0; i < topics.length; i++) {
+                        if (topics[i]._id == req.params.topic_id) {
+                            availablePages = Math.ceil((topics[i].posts.length) / perPageLimit);
+                            break;
+                        }
+                    }
+                    res.json({msg: 'success', availablePages: availablePages});
+                }
+            });
 
 //    subforumsSchema.findOne({
 //        _id: req.params.sub_id,
@@ -204,7 +246,7 @@ router.route('/:sub_id/:subt_id/:topic_id/new_post').put((req, res) =>
 //            );
 //        }
 //    });
-});
+        });
 
 
 

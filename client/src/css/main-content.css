@@ -252,5 +252,12 @@
         #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li {
           flex-basis: 100%;
           text-align: center; }
+          #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li a {
+            cursor: pointer;
+            font-weight: bold;
+            transition-duration: .3s; }
+            #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li a:hover {
+              color: #758e4f;
+              transition-duration: .3s; }
 
 /*# sourceMappingURL=main-content.css.map */

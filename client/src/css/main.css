@@ -4509,11 +4509,12 @@ ul {
       cursor: pointer;
       transition-duration: .3s; }
 
-.ag_user_role .admin {
-  color: red; }
-.ag_user_role .user {
+.ag_user_role.admin {
+  color: #ff264e;
+  text-shadow: 0px 0px 1px red; }
+.ag_user_role.user {
   color: lightblue; }
-.ag_user_role .guest {
+.ag_user_role.guest {
   color: lightgray; }
 
 .show {
@@ -4775,7 +4776,8 @@ ul {
       flex-wrap: wrap;
       flex-basis: 100%;
       background-color: #594455;
-      color: white; }
+      color: white;
+      align-items: center; }
       #ag_topic_content .ag_topic_post .ag_topic_post_header .ag_topic_post_username {
         flex-basis: 20%;
         text-align: center;
@@ -4861,7 +4863,8 @@ ul {
               text-align: left; }
     #ag_topic_content .ag_topic_post .ag_topic_post_content {
       flex-basis: 75%;
-      padding-left: 10px; }
+      padding-left: 10px;
+      word-wrap: anywhere; }
   #ag_topic_content .ag_create_post_container {
     flex-basis: 80%;
     display: flex;
@@ -4957,6 +4960,7 @@ ul {
       flex-wrap: wrap;
       align-content: center; }
       #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details h4 {
+        word-wrap: anywhere;
         margin: 0;
         flex-basis: 100%; }
         #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_details h4 a:hover {
@@ -5390,6 +5394,13 @@ ul {
         #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li {
           flex-basis: 100%;
           text-align: center; }
+          #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li a {
+            cursor: pointer;
+            font-weight: bold;
+            transition-duration: .3s; }
+            #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li a:hover {
+              color: #758e4f;
+              transition-duration: .3s; }
 
 @keyframes show_nice {
   from {

@@ -81,7 +81,7 @@ import  { Redirect } from 'react-router-dom'
                     <div id="ag_topic_content">
                         <div id="ag_topic_header">
                             <h4>{this.state.title}</h4>
-                            <p>by <a>User_Name</a> on {creationDisplayDate} in <Link to={'/subforum/' + this.props.match.params.sub_id + '/' + this.props.match.params.subt_id}>{this.state.subforumTitle}</Link></p>
+                            <p>by <a>{this.state.postedBy.username}</a> on {creationDisplayDate} in <Link to={'/subforum/' + this.props.match.params.sub_id + '/' + this.props.match.params.subt_id}>{this.state.subforumTitle}</Link></p>
                         </div>
                         <ul id="ag_topic_posts">
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>

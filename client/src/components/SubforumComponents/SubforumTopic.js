@@ -44,13 +44,13 @@ export default class SubforumTopic extends Component
                 <li className="ag_subforum_topic">
                     <div className="ag_subforum_topic_details">
                         <h4><Link to={"/subforum/" + this.props.subforum_id + "/" + this.props.subforum_topic_id + "/topic/" + this.props.topic._id}>{this.props.topic.title}</Link></h4>
-                        <p>By <a href="#">User_Name</a>, on {creationDisplayDate}</p>
+                        <p>By <a href="#">{this.props.topic.postedBy.username}</a>, on {creationDisplayDate}</p>
                     </div>
                     <div className="ag_subforum_topic_statistics"><span><i className="far fa-comment-dots"></i> {this.props.topic.postCount}</span></div>
                     <div className="ag_subforum_topic_latest_post">
                         <img src={"/img/profiles/profile.png"} alt="profile picture"/>
                         <ul>
-                            <li>User_Name</li>
+                            <li>{this.props.topic.latestPost.postedBy.username}</li>
                             <li>{latestPostDate}</li>
                         </ul>
                     </div>

@@ -76,6 +76,7 @@
             flex-basis: 100%;
             background-color: $secondary-color;
             color: white;
+            align-items: center;
             .ag_topic_post_username{
                 flex-basis: 20%;
                 text-align: center;
@@ -180,6 +181,7 @@
         .ag_topic_post_content{
             flex-basis: 75%;
             padding-left: 10px;
+            word-wrap: anywhere;
         }
     }
 

@@ -125,9 +125,9 @@ export default class Subforum extends Component
                                 }
                             </li>
                 
-                            <Pagination enableSort={true} sortBy={this.sortBy} goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
+                            <Pagination key='1' enableSort={true} sortBy={this.sortBy} goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                             {this.state.topics.map((topic) => <SubforumTopic key={topic._id} subforum_id={this.props.match.params.sub_id} subforum_topic_id={this.props.match.params.subt_id} topic={topic} editTopic={this.openEditModal} removeTopic={this.deleteTopic}/>)}
-                            <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
+                            <Pagination key='2' goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                         </ul>
                     </div>
                 </div>

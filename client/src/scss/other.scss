@@ -55,13 +55,14 @@ ul{
 }
 
 .ag_user_role{
-    .admin{
-        color: red;
+    &.admin{
+        color: #ff264e;
+        text-shadow: 0px 0px 1px red;
     }
-    .user{
+    &.user{
         color: lightblue;
     }
-    .guest{
+    &.guest{
         color: lightgray;
     }
 }

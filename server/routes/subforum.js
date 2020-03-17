@@ -119,53 +119,67 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
 
 
             subforumsSchema.findOne(
-                    {_id: req.params.sub_id, 'topics._id': req.params.subt_id},
-                    'topics.$._id topics.title topics.description topics.topics._id topics.topics.title topics.topics.postedBy topics.topics.creationDate topics.topics.posts',
-                    (error, data) =>
-            {
-                if (error)
-                {
-                    res.json({error: error});
-                } else
-                {
-                    if (data) {
-                        let topics = data.topics[0].topics;
-                        if (req.body.sortBy) {
-                            if (req.body.sortBy === 'latestPost') {
-                                topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
-                            } else if (req.body.sortBy === 'earliestPost') {
-                                topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? -1 : 1);
-                            } else if (req.body.sortBy === 'oldestTopic') {
-                                topics = topics.sort((a, b) => a.creationDate < b.creationDate ? -1 : 1);
-                            } else if (req.body.sortBy === 'newestTopic') {
-                                topics = topics.sort((a, b) => a.creationDate < b.creationDate ? 1 : -1);
-                            } else {
-                                topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
+                    {
+                        _id: req.params.sub_id,
+                        'topics._id': req.params.subt_id,
+                    },
+                    'topics._id topics.topics.postedBy topics.title topics.description topics.topics.$[elem]._id topics.topics.title topics.topics.postedBy topics.topics.creationDate topics.topics.posts',
+                    {
+                        arrayFilters: [{'elem._id': req.params.subt_id}]
+                    })
+                    .populate({
+                        path: 'topics.topics.postedBy',
+                        model: 'user',
+                        select: 'username role'})
+                    .populate({
+                        path: 'topics.topics.posts.postedBy',
+                        model: 'user',
+                        select: 'username country postCount role'})
+                    .exec(function (error, data)
+                    {
+                        if (error)
+                        {
+                            res.json({error: error});
+                        } else
+                        {
+                            if (data) {
+                                let topics = data.topics[0].topics;
+                                if (req.body.sortBy) {
+                                    if (req.body.sortBy === 'latestPost') {
+                                        topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
+                                    } else if (req.body.sortBy === 'earliestPost') {
+                                        topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? -1 : 1);
+                                    } else if (req.body.sortBy === 'oldestTopic') {
+                                        topics = topics.sort((a, b) => a.creationDate < b.creationDate ? -1 : 1);
+                                    } else if (req.body.sortBy === 'newestTopic') {
+                                        topics = topics.sort((a, b) => a.creationDate < b.creationDate ? 1 : -1);
+                                    } else {
+                                        topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
+                                    }
+                                } else {
+                                    topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
+                                }
+                                let topicsToSend = [];
+                                if (topics.length > perPageLimit * req.params.page) {
+                                    for (let i = (perPageLimit * req.params.page); i < topics.length && i < (perPageLimit * req.params.page) + perPageLimit; i++) {
+                                        topicsToSend.push(
+                                                {_id: topics[i]._id, title: topics[i].title, content: topics[i].posts[0].content, creationDate: topics[i].creationDate, postedBy: topics[i].postedBy, latestPost: {
+                                                        postDate: topics[i].posts[topics[i].posts.length - 1].postDate, postedBy: topics[i].posts[topics[i].posts.length - 1].postedBy},
+                                                    postCount: topics[i].posts.length}
+                                        );
+                                    }
+                                }
+                                let dataToSend = {
+                                    title: data.topics[0].title,
+                                    description: data.topics[0].description,
+                                    topics: topicsToSend,
+                                    page: req.params.page,
+                                    availablePages: Math.ceil(topics.length / perPageLimit)
+                                };
+                                res.json(dataToSend);
                             }
-                        } else {
-                            topics = topics.sort((a, b) => a.posts[a.posts.length - 1].postDate < b.posts[b.posts.length - 1].postDate ? 1 : -1);
                         }
-                        let topicsToSend = [];
-                        if (topics.length > perPageLimit * req.params.page) {
-                            for (let i = (perPageLimit * req.params.page); i < topics.length && i < (perPageLimit * req.params.page) + perPageLimit; i++) {
-                                topicsToSend.push(
-                                        {_id: topics[i]._id, title: topics[i].title, content: topics[i].posts[0].content, creationDate: topics[i].creationDate, postedBy: topics[i].postedBy, latestPost: {
-                                                postDate: topics[i].posts[topics[i].posts.length - 1].postDate, postedBy: topics[i].posts[topics[i].posts.length - 1].postedBy},
-                                            postCount: topics[i].posts.length}
-                                );
-                            }
-                        }
-                        let dataToSend = {
-                            title: data.topics[0].title,
-                            description: data.topics[0].description,
-                            topics: topicsToSend,
-                            page: req.params.page,
-                            availablePages: Math.ceil(topics.length / perPageLimit)
-                        };
-                        res.json(dataToSend);
-                    }
-                }
-            });
+                    });
         });
 
 router.route('/:id/new_subforum_topic').put((req, res) =>

@@ -31,12 +31,12 @@ export default class ForumSubforumTopic extends Component
         let beforeEditStates = this.state.beforeEdit;
         beforeEditStates[editField] = e.target.textContent;
         this.setState({edit: editStates, beforeEdit: beforeEditStates});
-    };
+    }
     cancelEdit = (e, editField) =>{
         let editStates = this.state.edit;
         editStates[editField] = false;
         this.setState({edit: editStates, [editField]: this.state.beforeEdit[editField]});
-    };
+    }
     confirmEdit = (e, editField) =>{
         let finalTitle = this.trimSpaces(this.state[editField]).trim();
         if (finalTitle.length > 0)
@@ -51,19 +51,19 @@ export default class ForumSubforumTopic extends Component
             beforeEditStates[editField] = finalTitle;
             this.setState({edit: editStates, [editField]: finalTitle, beforeEdit:beforeEditStates});
         }
-    };
+    }
     handleContentEditable= (e, editField) =>{
         if (e.target.value.length > 100){
         this.setState({[editField]: this.state[editField]});
         }else{
         this.setState({[editField]: e.target.value});
         }
-    };
+    }
     pasteAsPlainText = event => {
         event.preventDefault();
         const text = event.clipboardData.getData('text/plain');
         document.execCommand('insertHTML', false, text);
-    };
+    }
     disableNewlines = (event, editField) => {
       const keyCode = event.keyCode || event.which
       if (keyCode === 13) {
@@ -71,12 +71,12 @@ export default class ForumSubforumTopic extends Component
           this.confirmEdit(event, editField);
         if (event.preventDefault) event.preventDefault()
       }
-    };
+    }
     highlightAll = () => {
         setTimeout(() => {
             document.execCommand('selectAll', false, null)
         }, 0)
-    };
+    }
     trimSpaces = string => {
         return string
           .replace(/&nbsp;/g, '')
@@ -84,7 +84,7 @@ export default class ForumSubforumTopic extends Component
           .replace(/&gt;/g, '>')
           .replace(/&lt;/g, '<')
           .replace(/<br>/g, '')
-    };
+    }
     
     editModeCancel(){
         if (this.props.editMode == false){
@@ -97,6 +97,20 @@ export default class ForumSubforumTopic extends Component
     }
     
     render() {
+        
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        
+            let latestTopic = this.props.topic.topics[this.props.topic.topics.length-1];
+            let date;
+            let latestTopicDate='-';
+        
+            if (latestTopic){
+                if (latestTopic.title.length > 20){ 
+                    latestTopic.title = latestTopic.title.substring(0, 17) + "...";
+                };
+                date = new Date(latestTopic.creationDate);
+                latestTopicDate= (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " " + months[date.getMonth()] + " " + date.getFullYear();
+            }
         let messageCount = this.props.topic.topics.reduce((total, topic)=> total + topic.posts.length, 0);
         return (
                 <li className="ag_subforum_topic">
@@ -146,11 +160,14 @@ export default class ForumSubforumTopic extends Component
                     <div className="ag_subforum_topic_statistic"><span><i className="far fa-comment-dots"></i> {messageCount}</span></div>
                     <div className="ag_subforum_topic_latest_post">
                         <img src="img/profiles/profile.png"/>
+                        {
+                        latestTopic ?                  
                         <ul>
-                            <li>Topic name</li>
-                            <li>UserName</li>
-                            <li>01 April 2020</li>
-                        </ul>
+                        <li><Link to={'/subforum/'+this.props.subforum_id+'/'+this.props.topic._id+'/topic/'+latestTopic._id}>{latestTopic.title}</Link></li>
+                            <li>{latestTopic.postedBy.username}</li>
+                            <li>{latestTopicDate}</li>
+                            </ul> : <ul><li>-</li><li>-</li><li>-</li></ul>
+                        }
                     </div>
                 </li>
                 );
