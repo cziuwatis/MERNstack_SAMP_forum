@@ -20,8 +20,9 @@ export default class Login extends Component
             sessionStorage.loggedIn = 'true';
             sessionStorage.accessLevel = data.accessLevel;
             sessionStorage.username = data.username
+            this.setState({loggedIn: true, valid: true});
         }
-        this.setState({loggedIn: data.valid, valid: data.valid});
+        this.setState({loggedIn: false, valid: false});
     }
 
     handleSubmit = e => {

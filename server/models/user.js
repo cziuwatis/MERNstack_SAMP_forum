@@ -7,15 +7,15 @@ let postSchema = new mongoose.Schema(
         });
 let userSchema = new mongoose.Schema(
         {
-            _id: mongoose.Schema.Types.ObjectId,
+            //_id: mongoose.Schema.Types.ObjectId,
             email: {type: String, required: true, unique: true},
-            username: {type: String, required: true, minlength: 3, maxlength: 20},
+            username: {type: String, required: true, minlength: 3, maxlength: 20,  collation: {locale: 'simple', strength: 1}},
             password: {type: String, required: true, minlength: 10},
             salt: {type: String, required: true},
             country: {type: String, default: "Ireland", maxlength: 30},
             postCount: {type: Number, default: 0},
             role: {type: Number, default: 1},
-            posts: [postSchema]
+                        posts: [postSchema]
         });
 
 module.exports = mongoose.model('user', userSchema);

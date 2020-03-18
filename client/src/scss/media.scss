@@ -6,6 +6,12 @@
     #ag_main_content{
         flex-basis: 80%;
     }
+    #ag_community_container{
+
+        #ag_community{
+            flex-basis: 65%;
+        }
+    }
 }
 
 @media screen and (max-width: 1080px){
@@ -25,6 +31,12 @@
             h3{
                 font-size: 35px;
             }
+        }
+    }
+    #ag_community_container{
+
+        #ag_community{
+            flex-basis: 75%;
         }
     }
 }
@@ -177,6 +189,9 @@
     #subforum{
         #ag_subforum_topic_content{
             flex-basis: 100%;
+            .ag_subforum_topic{
+                justify-content: center;
+            }
         }
     }
     .ag_pagination_container{
@@ -232,6 +247,12 @@
                     }
                 }
             }
+        }
+    }
+    #ag_community_container{
+
+        #ag_community{
+            flex-basis: 100%;
         }
     }
 }

@@ -34,7 +34,7 @@ export default class Header extends Component
                         <ul>
                             <li><Link to="/"><i className="fas fa-warehouse"></i> Forum</Link></li>
                             <li id="ag_header_community">
-                                <a href="#"><i className="fas fa-users"></i> Community</a>
+                                <Link to="/community"><i className="fas fa-users"></i> Community</Link>
                             </li>
                             {
                                 sessionStorage.loggedIn === 'true' ?

@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
 let express = require('express');
 var crypto = require('crypto');
 let router = express.Router();
+let usersPerPageLimit = 8;
 //password hashing from https://ciphertrick.com/salt-hash-passwords-using-nodejs-crypto/
 /**
  * generates random string of characters i.e salt
@@ -36,37 +37,31 @@ function saltHashPassword(userpassword, salt) {
 mongoose.set('useFindAndModify', false);
 
 let userSchema = require(`../models/user`);
-function getUserAccessLevel(userId) {
-    userSchema.findById(userId,
-            'role',
-            (error, data) => {
-        if (error) {
-            return null;
-        } else {
-            return data.role;
-        }
-    }
-    );
-}
+let subforumsSchema = require(`../models/forum`);
 
-// read all records
-router.route('/').get((req, res) =>
+// read records on page
+router.route('/').post((req, res) =>
 {
-    if (typeof req.session.user === 'undefined')
-    {
-        // the user is not logged in
-    } else {
-        userSchema.find((error, data) =>
-        {
-            if (error)
-            {
-                return next(error);
-            } else
-            {
-                res.json(data);
-            }
-        });
+    let findQuery = {};
+    if (req.body.last_id) {
+        findQuery = {'_id': {'$gt': req.body.last_id}};
     }
+    userSchema.find(findQuery, 'username country postCount role').limit(usersPerPageLimit).exec(function (error, data)
+    {
+        if (error)
+        {
+            return res.json(error);
+        } else
+        {
+            if (data) {
+                let users = data;
+                res.json({users: users});
+            } else {
+                res.json({error: "No more data available"});
+            }
+        }
+    });
+
 });
 
 
@@ -107,21 +102,25 @@ router.route('/register').post((req, res) =>
     if (error) {
         return res.json({error: error});
     }
-    userSchema.findOne({email: email}, (error, data) => {
+    userSchema.findOne({$or: [{email: email}, {username: username}]}, (error, data) => {
         if (data !== null) {
-            return res.json({error: "Email is already in use, please use another one or try logging in."});
+            return res.json({error: "Email and/or username is already in use, please use another one or try logging in."});
         } else {
+            console.log("saltmines");
             let salt = genRandomString(32);
             user = {username: username, email: email, password: saltHashPassword(password, salt), salt: salt, role: 1};
             // user.password = await saltHashPassword(password, salt);
             userSchema.create(user, (error) =>
             {
+                console.log("creating user?");
                 if (error)
                 {
-                    return res.json(error);
+                    return res.json({error: error});
                 }
+                console.log("searching user?");
                 userSchema.findOne({email: email},
                         (error, data) => {
+                    console.log("found user?");
                     if (error) {
                         console.log(error);
                     } else {
@@ -162,44 +161,188 @@ router.route('/login').post((req, res) => {
 });
 
 // Update one record
-router.route('/update_user/:id').put((req, res, next) =>
+router.route('/update_user/:id').put((req, res) =>
 {
+    if (!req.session.user) {
+        console.log("no user set");
+        return res.json({error: 'User is not logged in, unable to promote user'});
+    }
     if (typeof req.session.user === 'undefined')
     {
         // the user is not logged in
     } else {
         userSchema.findByIdAndUpdate(req.params.id, {$set: req.body}, (error, data) =>
         {
-            if (error)
-            {
-                return next(error);
-            } else
-            {
-                res.json(data);
-            }
         });
     }
+});
+
+router.route('/promote_user/:id').put((req, res) =>
+{
+
+    if (!req.session.user) {
+        console.log("no user set");
+        return res.json({error: 'User is not logged in, unable to promote user'});
+    }
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
+        } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
+            }
+            userSchema.findById(req.params.id,
+                    'role',
+                    (error, searchUser) => {
+                if (error) {
+                    return null;
+                } else {
+                    if (searchUser === null) {
+                        return res.json({error: 'Promotion user not found, please refresh'});
+                    }
+                    toChangeAccessLevel = searchUser.role;
+                    if (toChangeAccessLevel > requestAccessLevel) {
+                        return res.json({error: "Cannot promote to a higher role than yourself"});
+                    } else if (toChangeAccessLevel >= 5) {
+                        return res.json({error: "Max promotion reached"});
+                    }
+                    userSchema.findByIdAndUpdate(req.params.id, {$inc: {role: 1}}, (error, data) =>
+                    {
+                        if (error)
+                        {
+                            res.json({error: error});
+                        } else
+                        {
+                            res.json({msg: "User has been promoted"});
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+});
+router.route('/demote_user/:id').put((req, res) =>
+{
+
+    if (!req.session.user) {
+        console.log("no user set");
+        return res.json({error: 'User is not logged in, unable to promote user'});
+    } else if (req.session.user.userId === req.params.id) {
+        return res.json({error: 'You cannot demote yourself'});
+    }
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
+        } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
+            }
+            userSchema.findById(req.params.id,
+                    'role',
+                    (error, searchUser) => {
+                if (error) {
+                    return null;
+                } else {
+                    if (searchUser === null) {
+                        return res.json({error: 'Demotion user not found, please refresh'});
+                    }
+                    toChangeAccessLevel = searchUser.role;
+                    if (toChangeAccessLevel >= requestAccessLevel) {
+                        return res.json({error: "Cannot demote a higher than or same role as yourself"});
+                    } else if (toChangeAccessLevel === 0) {
+                        return res.json({error: "Min promotion reached"});
+                    }
+                    userSchema.findByIdAndUpdate(req.params.id, {$inc: {role: -1}}, (error, data) =>
+                    {
+                        if (error)
+                        {
+                            res.json({error: error});
+                        } else
+                        {
+                            res.json({msg: "User has been demoted"});
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 
 // Delete one record
 router.route('/delete_user/:id').delete((req, res, next) =>
 {
-    if (typeof req.session.user === 'undefined')
-    {
-        // the user is not logged in
-    } else {
-        userSchema.findByIdAndRemove(req.params.id, (error, data) =>
-        {
-            if (error)
-            {
-                return next(error);
-            } else
-            {
-                res.status(200).json({msg: data});
-            }
-        });
+    if (!req.session.user) {
+        console.log("no user set");
+        return res.json({error: 'User is not logged in, unable to promote user'});
+    } else if (req.session.user.userId === req.params.id) {
+        return res.json({error: 'You cannot delete yourself'});
     }
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
+        } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
+            }
+            userSchema.findById(req.params.id,
+                    'role username',
+                    (error, searchUser) => {
+                if (error) {
+                    return res.json({error: error});
+                } else {
+                    if (searchUser === null) {
+                        return res.json({error: 'Deletion user not found, please refresh'});
+                    }
+                    toChangeAccessLevel = searchUser.role;
+                    if (toChangeAccessLevel > requestAccessLevel) {
+                        return res.json({error: "Cannot delete a higher than or same role as yourself"});
+                    } else if (toChangeAccessLevel >= 5) {
+                        return res.json({error: "Max promotion reached"});
+                    }
+                    subforumsSchema.updateMany({},
+                            {
+                                $pull: {'topics.$[].topics': {'postedBy': req.params.id}
+                                }
+                            },
+                            (error) => {
+                        if (error) {
+                            return res.json({error: "An error has occurred while deleting the user's topics, try again later"});
+                        }
+                        subforumsSchema.updateMany({},
+                                {
+                                    $pull: {'topics.$[].topics.$[].posts': {'postedBy': req.params.id}
+                                    }
+                                },
+                                (error) => {
+                            if (error) {
+                                return res.json({error: "An error has occurred while deleting the user's posts, try again later"});
+                            }
+                            userSchema.findByIdAndRemove(req.params.id, (error) =>
+                            {
+                                if (error) {
+                                    return res.json({error: "An error occurred while deleting user, try again later"});
+                                }
+                                res.json({msg: "User and all of their content has been removed"});
+                            });
+                        }
+                        );
+                    }
+                    );
+                }
+            });
+        }
+    });
 });
 
 router.route('/logout/').post((req, res, next) => {

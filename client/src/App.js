@@ -9,6 +9,7 @@ import Subforum from "./components/Subforum";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 import Register from "./components/Register";
+import Community from "./components/Community";
 import Login from "./components/Login";
 
 
@@ -27,6 +28,7 @@ export default class App extends Component
                     <Header/>
                     <Switch>
                     <Route exact path='/' component={Forum}/>
+                    <Route exact path='/community' component={Community}/>
                     <Route exact path='/register' component={Register}/>
                     <Route exact path='/login' component={Login}/>
                     <Route exact path='/topic/:id' component={Topic}/>

@@ -4512,8 +4512,10 @@ ul {
 .ag_user_role.admin {
   color: #ff264e;
   text-shadow: 0px 0px 1px red; }
-.ag_user_role.user {
-  color: lightblue; }
+.ag_user_role.moderator {
+  color: #FFA500; }
+.ag_user_role.faithful {
+  color: #46c0e8; }
 .ag_user_role.guest {
   color: lightgray; }
 
@@ -4530,7 +4532,7 @@ ul {
   text-shadow: 0px 0px 5px black;
   color: white;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px black;
+  box-shadow: 0px 0px 10px #FFA500;
   padding: 15px; }
   .confirmationUI h3 {
     flex-basis: 100%; }
@@ -4540,6 +4542,9 @@ ul {
     flex-basis: 30%;
     margin-left: 5px;
     margin-right: 5px; }
+
+.react-confirm-alert-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important; }
 
 .ag_confirm_tick:hover {
   color: green; }
@@ -4742,7 +4747,8 @@ ul {
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
-    padding-left: 15px; }
+    padding-left: 15px;
+    text-shadow: black 3px 2px 4px; }
     #ag_topic_content #ag_topic_header h4 {
       flex-basis: 100%;
       margin-bottom: 0; }
@@ -4917,7 +4923,8 @@ ul {
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
-    padding-left: 15px; }
+    padding-left: 15px;
+    text-shadow: black 3px 2px 4px; }
     #ag_subforum_topic_content #ag_subforum_topic_header h4 {
       flex-basis: 100%;
       margin-bottom: 0; }
@@ -4950,7 +4957,7 @@ ul {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center; }
     #ag_subforum_topic_content .ag_subforum_topic:nth-of-type(odd) {
       background-color: #f6f6f6; }
@@ -4977,16 +4984,19 @@ ul {
       display: flex;
       flex-wrap: wrap;
       align-content: center;
-      justify-content: center; }
+      justify-content: center;
+      flex-basis: 28%; }
       #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post img {
         border-radius: 50%;
-        height: 45px; }
+        height: 45px;
+        width: 45px; }
       #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post ul {
         padding: 0;
         margin: 0;
         display: flex;
         flex-wrap: wrap;
-        justify-content: center; }
+        justify-content: center;
+        flex-basis: 50%; }
         #ag_subforum_topic_content .ag_subforum_topic .ag_subforum_topic_latest_post ul li {
           flex-basis: 100%;
           text-align: center; }
@@ -5650,12 +5660,135 @@ ul {
 .hide {
   display: none !important; }
 
+@keyframes show_nice {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+#ag_community_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; }
+  #ag_community_container #ag_community {
+    animation: show_nice .3s;
+    background-color: white;
+    box-shadow: 0px 0px 10px black;
+    border-radius: 5px;
+    flex-basis: 55%;
+    margin-bottom: 15px;
+    justify-content: center;
+    transition-duration: .3s; }
+    #ag_community_container #ag_community .ag_community_title {
+      text-shadow: black 3px 2px 4px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      background-color: #594455;
+      background-image: url(../img/backgroundcityedit1.png);
+      background-size: cover;
+      background-position-y: 55%;
+      background-repeat: no-repeat;
+      padding: 10px;
+      flex-basis: 100%;
+      color: white;
+      margin: 0;
+      margin-bottom: 10px; }
+    #ag_community_container #ag_community .ag_community_members_container {
+      display: flex;
+      flex-wrap: wrap;
+      flex-basis: 80%;
+      border-style: solid;
+      border-color: #f6f6f6;
+      border-width: 2px;
+      border-top: 0;
+      border-bottom: 0;
+      list-style: none;
+      margin: 0;
+      padding: 5px;
+      justify-content: center; }
+      #ag_community_container #ag_community .ag_community_members_container .react-contextmenu {
+        background-color: white;
+        box-shadow: 0px 2px 5px black;
+        z-index: 1;
+        border-radius: 5px;
+        overflow: hidden; }
+        #ag_community_container #ag_community .ag_community_members_container .react-contextmenu .react-contextmenu-item {
+          padding: 10px;
+          transition-duration: .3s;
+          font-weight: bold; }
+          #ag_community_container #ag_community .ag_community_members_container .react-contextmenu .react-contextmenu-item:hover {
+            background-color: #758e4f;
+            color: white;
+            text-shadow: 0px 2px 2px black;
+            transition-duration: .3s; }
+        #ag_community_container #ag_community .ag_community_members_container .react-contextmenu .react-contextmenu-item--disabled {
+          color: lightgrey;
+          cursor: not-allowed; }
+          #ag_community_container #ag_community .ag_community_members_container .react-contextmenu .react-contextmenu-item--disabled:hover {
+            background-color: initial;
+            color: lightgrey;
+            text-shadow: none; }
+      #ag_community_container #ag_community .ag_community_members_container .ag_community_member, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper {
+        animation: show_nice .3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-basis: 20%;
+        padding: 15px;
+        border-radius: 10px;
+        border-style: solid;
+        border-color: #f6f6f6;
+        border-width: 2px;
+        transition-duration: .3s;
+        margin: 5px; }
+        #ag_community_container #ag_community .ag_community_members_container .ag_community_member .ag_community_profile_image, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper .ag_community_profile_image {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          box-shadow: #b3b3b3 0px 1px 3px;
+          margin-bottom: 10px; }
+        #ag_community_container #ag_community .ag_community_members_container .ag_community_member:hover, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper:hover {
+          border-color: #758e4f;
+          cursor: pointer;
+          border-radius: 5px;
+          transition-duration: .3s; }
+        #ag_community_container #ag_community .ag_community_members_container .ag_community_member .ag_community_profile_username, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper .ag_community_profile_username {
+          font-size: 18px; }
+        #ag_community_container #ag_community .ag_community_members_container .ag_community_member .ag_community_profile_role, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper .ag_community_profile_role {
+          opacity: .6; }
+        #ag_community_container #ag_community .ag_community_members_container .ag_community_member .ag_community_profile_post_count, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper .ag_community_profile_post_count {
+          margin-top: 5px; }
+        #ag_community_container #ag_community .ag_community_members_container .ag_community_member .ag_community_profile_post_count, #ag_community_container #ag_community .ag_community_members_container .ag_community_member .ag_community_profile_country, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper .ag_community_profile_post_count, #ag_community_container #ag_community .ag_community_members_container .react-contextmenu-wrapper .ag_community_profile_country {
+          opacity: .8; }
+    #ag_community_container #ag_community .ag_community_load_more {
+      flex-basis: 100%;
+      margin-top: 10px;
+      background-color: #594455;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      transition-duration: .3s; }
+      #ag_community_container #ag_community .ag_community_load_more:hover {
+        background-color: #758e4f;
+        transition-duration: .3s; }
+      #ag_community_container #ag_community .ag_community_load_more.ag_community_load_more_disabled {
+        cursor: not-allowed;
+        background-color: #f6f6f6;
+        transition-duration: .3s; }
+
 @media screen and (max-width: 1210px) {
   #forum {
     justify-content: center; }
 
   #ag_main_content {
-    flex-basis: 80%; } }
+    flex-basis: 80%; }
+
+  #ag_community_container #ag_community {
+    flex-basis: 65%; } }
 @media screen and (max-width: 1080px) {
   #ag_header #ag_header_content #ag_server_details {
     flex-basis: 40%; } }
@@ -5663,7 +5796,10 @@ ul {
   #ag_main_content {
     flex-basis: 95%; }
     #ag_main_content .ag_subforum_title h3 {
-      font-size: 35px; } }
+      font-size: 35px; }
+
+  #ag_community_container #ag_community {
+    flex-basis: 75%; } }
 @media screen and (max-width: 900px) {
   #ag_header #ag_header_content #ag_server_details {
     flex-basis: 50%; }
@@ -5745,6 +5881,8 @@ ul {
 
   #subforum #ag_subforum_topic_content {
     flex-basis: 100%; }
+    #subforum #ag_subforum_topic_content .ag_subforum_topic {
+      justify-content: center; }
 
   .ag_pagination_container {
     justify-content: center; }
@@ -5778,7 +5916,10 @@ ul {
     #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_profile {
       display: none; }
     #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_content {
-      flex-basis: 100%; } }
+      flex-basis: 100%; }
+
+  #ag_community_container #ag_community {
+    flex-basis: 100%; } }
 @media screen and (max-width: 485px) {
   #subforum #ag_subforum_topic_content #ag_subforum_topics .ag_subforum_topic .ag_subforum_topic_details {
     flex-basis: 78%;

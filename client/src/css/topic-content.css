@@ -35,7 +35,8 @@
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
-    padding-left: 15px; }
+    padding-left: 15px;
+    text-shadow: black 3px 2px 4px; }
     #ag_topic_content #ag_topic_header h4 {
       flex-basis: 100%;
       margin-bottom: 0; }

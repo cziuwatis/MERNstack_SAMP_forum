@@ -60,9 +60,13 @@ router.route('/:sub_id/:subt_id/new_topic').put((req, res) =>
     {
         if (error)
         {
-            res.json(error);
+            return res.json(error);
         }
-        res.json({_id: data.topics[0].topics[data.topics[0].topics.length - 1]._id});
+        userSchema.findOneAndUpdate({_id: req.session.user.userId}, {$inc: {postCount: +1}}, (error, data) => {
+//                console.log(error);
+//                console.log(data);
+        });
+        res.json({msg: "success"});
     });
 });
 

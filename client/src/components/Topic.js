@@ -88,9 +88,9 @@ import  { Redirect } from 'react-router-dom'
                             {this.state.posts.map((post) => <Post key={post._id} removePost={this.removePost} post={post}/>)}
                             <Pagination goToPage={this.goToPage} currentPage={this.state.currentPage} availablePages={this.state.availablePages}/>
                             {
-                                sessionStorage.accessLevel > 0 ?
+                                sessionStorage.accessLevel > 1 ?
                                     <CreatePost createPost={this.createPost}/>
-                                        : <li className="ag_create_post_container"><span className="ag_create_post_login">You must be logged in to be able to post</span><Link to='/login' className="ag_btn ag_common_btn ag_create_post_button">Login</Link></li>
+                                        : sessionStorage.accessLevel > 0 ? <li className="ag_create_post_container"><span className="ag_create_post_login">While you are a guest, you cannot post</span></li>:  <li className="ag_create_post_container"><span className="ag_create_post_login">You must be logged in to be able to post</span><Link to='/login' className="ag_btn ag_common_btn ag_create_post_button">Login</Link></li>
                             }
                         </ul>
                     </div>
