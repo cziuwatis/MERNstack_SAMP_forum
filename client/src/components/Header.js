@@ -8,14 +8,21 @@ export default class Header extends Component
     {
         super(props);
         this.state = {
-            profileContextOpen: false
+            profileContextOpen: false,
+            server_stats: {
+                hostname: "Rls.lt 0.3.7 | Realus Lietuvos Serveris",
+                ip: "samp.rls.lt",
+                version: "3.7.2",
+                maxPlayers: 300,
+                playerCount: 0
+            }
         };
     }
 
     toggleContext = e => {
         this.setState({profileContextOpen: !this.state.profileContextOpen});
     }
-    
+
     logOut = e => {
         axios.defaults.withCredentials = true;
         axios.post('http://localhost:4000/users/logout')
@@ -26,8 +33,17 @@ export default class Header extends Component
         sessionStorage.username = '';
         window.location.pathname = '/';
     }
-
+    componentDidMount() {
+        axios.get('http://localhost:4000/forum/server_stats')
+                .then(res => this.setState({server_stats: res.data}))
+                .catch((error) => console.log(error));
+    }
     render() {
+        console.log(this.state);
+        let maxPlayers = this.state.server_stats.maxPlayers;
+        let playerCount = this.state.server_stats.playerCount;
+        let playerStatsBackgroundPercentageStyle = {backgroundSize: (playerCount / maxPlayers * 100) + '% 100%'};
+        console.log(playerStatsBackgroundPercentageStyle);
         return (
                 <header id="ag_header">
                     <nav id="ag_top_header">
@@ -64,22 +80,22 @@ export default class Header extends Component
                             <table>
                                 <tbody>
                                     <tr>
-                                        <th colSpan="2">Server Name Goes Here</th>
+                                        <th colSpan="2">{this.state.server_stats.hostname}</th>
                                         <th rowSpan="4">
                                             <img src={"/img/server-logo.png"} alt="server logo"/>
                                         </th>
                                     </tr>
                                     <tr>
                                         <td>IP: </td>
-                                        <td>192.168.1.1</td>
+                                        <td>{this.state.server_stats.ip}</td>
                                     </tr>
                                     <tr>
                                         <td>Players: </td>
-                                        <td id="ag_server_details_player_count">150/300</td>
+                                        <td id="ag_server_details_player_count" style={playerStatsBackgroundPercentageStyle}>{this.state.server_stats.playerCount}/{this.state.server_stats.maxPlayers}</td>
                                     </tr>
                                     <tr>
                                         <td>Version: </td>
-                                        <td>3.7.2</td>
+                                        <td>{this.state.server_stats.version}</td>
                                     </tr>
                                 </tbody>
                             </table>

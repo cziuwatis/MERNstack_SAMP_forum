@@ -120,7 +120,10 @@
       box-shadow: black 2px 2px 6px;
       flex-basis: 30%; }
       #ag_header #ag_header_content #ag_server_details #ag_server_details_player_count {
-        background: linear-gradient(90deg, #758e4f 50%, black 50%);
+        background-color: black;
+        background-image: linear-gradient(to right, #758e4f, #758e4f);
+        background-size: 1% 100%;
+        background-repeat: no-repeat;
         text-align: center; }
       #ag_header #ag_header_content #ag_server_details table {
         width: 100%; }

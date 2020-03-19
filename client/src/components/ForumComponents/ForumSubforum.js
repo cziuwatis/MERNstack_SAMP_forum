@@ -96,7 +96,9 @@ export default class ForumSubforum extends Component
                 .catch((error) => console.log(error));
         this.updateTopics();
     }
-    
+    move = e=>{
+        this.props.move(e.target.getAttribute('name'), this.props.subforum);
+    }
     render() {
 
         return (
@@ -126,7 +128,9 @@ export default class ForumSubforum extends Component
                         sessionStorage.accessLevel > 3 ?
                         <div className="ag_subforum_control">
                             <span onClick={e => this.props.removeSubforum(this.props.subforum._id)} className="ag_btn ag_common_btn">Remove subforum</span>
-                            <span onClick={this.toggleEditMode} className="ag_btn ag_common_btn">Edit</span>            
+                            <span name='-1' onClick={this.move} className="ag_btn ag_common_btn">Up</span>    
+                            <span onClick={this.toggleEditMode} className="ag_btn ag_common_btn">Edit</span>
+                            <span name='1' onClick={this.move} className="ag_btn ag_common_btn">Down</span>
                             <span onClick={this.addTopic} className="ag_btn ag_common_btn">Add topic</span>
                         </div> : null
                     }

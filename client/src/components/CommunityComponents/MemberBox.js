@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from 'axios';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import ConfirmationUI from '../ConfirmationUI';
+import EditMenu from './EditMenu';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 export default class Community extends Component
@@ -9,7 +10,8 @@ export default class Community extends Component
     constructor(props) {
         super(props);
         this.state = {
-            role: this.props.user.role
+            role: this.props.user.role,
+            username: this.props.user.username
         };
     }
 
@@ -43,6 +45,21 @@ export default class Community extends Component
             }
         });
     }
+    handleEdit = e => {
+        let editUser = (data) => {
+            axios.defaults.withCredentials = true;
+            axios.put('http://localhost:4000/users/update_user/' + this.props.user._id, data)
+                    .then(res => !res.data.error ? this.setState({username: res.data.username}) : alert(res.data.error))
+                    .catch((error) => console.log(error));
+        }
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                        <EditMenu username={this.state.username} query={"Edit User"} msg={"you are about to save changes"} closeFunction={onClose} yesFunction={editUser}/>
+                        );
+            }
+        });
+    }
     render() {
         let role = this.state.role;
         if (role >= 5) {
@@ -56,12 +73,11 @@ export default class Community extends Component
         } else {
             role = 'guest';
         }
-
         return (
                 <ContextMenuTrigger renderTag='li' id={this.props.user._id}>
                 
                     <img className='ag_community_profile_image' src={"/img/profiles/profile.png"} alt='profile_picture' />
-                    <span className={'ag_community_profile_username ag_user_role ' + role}>{this.props.user.username}</span>
+                    <span className={'ag_community_profile_username ag_user_role ' + role}>{this.state.username}</span>
                     <span className='ag_community_profile_role'>{role}</span>
                     <span className='ag_community_profile_post_count'>{this.props.user.postCount}</span>
                     <span className='ag_community_profile_country'>{this.props.user.country}</span>
@@ -70,6 +86,9 @@ export default class Community extends Component
                                         {this.state.role < 5 && (this.state.role < sessionStorage.accessLevel)
                                                         ? <MenuItem onClick={this.handlePromote}>Promote</MenuItem>
                                                         : <MenuItem disabled={true} >Promote</MenuItem>}
+                                        {(this.state.role <= sessionStorage.accessLevel)
+                                                        ? <MenuItem onClick={this.handleEdit}>Edit</MenuItem>
+                                                        : <MenuItem disabled={true} >Edit</MenuItem>}
                                         {this.state.role > 1 && this.state.role < sessionStorage.accessLevel
                                                         ? <MenuItem onClick={this.handleDemote}>Demote</MenuItem>
                                                         : <MenuItem disabled={true} >Demote</MenuItem>}

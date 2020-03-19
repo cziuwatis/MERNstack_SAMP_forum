@@ -6,6 +6,7 @@ let cors = require('cors');
 let bodyParser = require('body-parser');
 let dbConfig = require('./config/db');
 
+
 // Routers
 const usersRouter = require('../server/routes/users');
 const forumRouter = require('../server/routes/forum');
@@ -16,11 +17,11 @@ const topicRouter = require('../server/routes/topic');
 // Express
 const app = express();
 app.use(session({
-  secret: "YOUR_SECRET_KEY",
-  resave: true,
-  cookie: { secure: false, maxAge: 6000000 }, 
-  saveUninitialized: true,
-  store: new MongoStore({mongooseConnection: mongoose.connection})
+    secret: "YOUR_SECRET_KEY",
+    resave: false,
+    cookie: {secure: false, maxAge: 6000000},
+    saveUninitialized: true,
+    store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
 // Port

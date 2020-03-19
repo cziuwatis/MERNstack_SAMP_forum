@@ -24,6 +24,7 @@ let subforumTopicSchema = new mongoose.Schema(
 let subforumSchema = new mongoose.Schema(
         {
             title: {type: String},
+            index: {type: Number},
             topics: [subforumTopicSchema]
         });
 

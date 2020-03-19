@@ -162,7 +162,11 @@
             box-shadow: black 2px 2px 6px;
             flex-basis: 30%;
             #ag_server_details_player_count{
-                background: linear-gradient(90deg, $tertiary-color 50%, rgba(0,0,0,1) 50%);
+                //background: linear-gradient(90deg, $tertiary-color 50%, rgba(0,0,0,1) 50%);
+                background-color: black;
+                background-image: linear-gradient(to right, $tertiary-color, $tertiary-color);
+                background-size: 1% 100%;
+                background-repeat: no-repeat;
                 text-align: center;
             }
             table{

@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 
 let countersSchema = new mongoose.Schema(
         {
-            sequence_value: {type: Number}
+            _id: {type: String, required: true},
+            sequence_value: {type: Number, default: 1}
         });
 
 module.exports = mongoose.model('counters', countersSchema);

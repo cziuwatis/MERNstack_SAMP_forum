@@ -17,8 +17,8 @@ export default class ConfirmationUI extends Component
 <div className="confirmationUI">
     <h3>{this.props.query}</h3>
     <p>{this.props.msg}</p>
-    <span className="ag_btn ag_common_btn" onClick={this.props.closeFunction}>No</span>
-    <span className="ag_btn ag_common_btn" onClick={this.confirm}>Yes</span>
+    <span className="ag_btn ag_common_btn" onClick={this.props.closeFunction}>Cancel</span>
+    <span className="ag_btn ag_common_btn" onClick={this.confirm}>Ok</span>
 </div>
                 );
     }

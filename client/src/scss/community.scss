@@ -133,5 +133,38 @@
             }
         }
     }
-
+}
+.ag_community_edit_user_container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    flex-basis: 60%;
+    label{
+        background-color: $secondary-color;
+        padding: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+    input{
+        padding: 10px;
+        font-family: inherit;
+        //margin-top: 5px;
+        border-color: $secondary-color;
+        border-width: 3px;
+        border-top: 0;
+        border-style: solid;
+        background-color: #ffffffcc;
+        transition-duration: .4s;
+        box-shadow: 0px 3px 5px $secondary-color;
+        &:focus{
+            transition-duration: .4s;
+            border-color: $tertiary-color;
+            box-shadow: 0px 1px 10px $tertiary-color;
+            background-color: rgba(red($tertiary-color)+90, green($tertiary-color)+90, blue($tertiary-color)+90, 1);
+        }
+    }
 }
