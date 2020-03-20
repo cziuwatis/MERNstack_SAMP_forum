@@ -66,23 +66,88 @@ router.route('/').post((req, res) =>
 
 
 // Read one record
-router.route('/get_user/:id').get((req, res) =>
+router.route('/get_user/').get((req, res) =>
         {
-            if (typeof req.session.user === 'undefined')
-            {
-                // the user is not logged in
-            } else {
-                userSchema.findById(req.params.id, (error, data) =>
-                {
-                    if (error)
-                    {
-                        return next(error);
-                    } else
-                    {
-                        res.json(data);
-                    }
-                });
+            if (!req.session.user) {
+                console.log("no user set");
+                return res.json({error: 'User is not logged in, unable to edit user! (relog)'});
+            } else if (!req.session.user.userId) {
+                return res.json({error: "There has been an error with your login, please re-log. (relog)"});
             }
+            userSchema.findById(req.session.user.userId, 'username email avatar country', (error, data) =>
+            {
+                if (error)
+                {
+                    return res.json({error: "There has been an error trying to find user details, try again later."});
+                } else
+                {
+                    if (data) {
+                        return res.json(data);
+                    } else {
+                        return res.json({error: "User was not found, please re-log and try again. (relog)"});
+                    }
+                }
+            });
+
+        });
+router.route('/edit_user/').put((req, res) =>
+        {
+            console.log(req.session);
+            console.log("edit user");
+            if (!req.session.user) {
+                console.log("no user set");
+                return res.json({error: 'User is not logged in, unable to edit user! (relog)'});
+            } else if (!req.session.user.userId) {
+                return res.json({error: "There has been an error with your login, please re-log. (relog)"});
+            }
+            let toUpdate = {};
+            let username = req.body.username;
+            let password = req.body.password;
+            let email = req.body.email;
+            let error = "";
+            if (username) {
+                username = username.trim();
+                if (username.length < 3 || username.length > 20 || /[^0-9a-zA-Z _-]+/.test(username)) {
+                    error = "Invalid username -> Needs to be with length between 3-20 characters and only with special characters like _ or -";
+                }
+                toUpdate.username = username;
+            }
+            if (email) {
+                email = email.trim().toLowerCase();
+                if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email.toLowerCase())) {
+                    error = "Invalid email";
+                }
+                toUpdate.email = email;
+            }
+            if (error) {
+                return res.json({error: error});
+            }
+            let salt = undefined;
+            if (password) {
+                salt = genRandomString(32);
+                password = saltHashPassword(password, salt);
+                toUpdate.salt = salt;
+                toUpdate.password = password;
+            }
+
+            userSchema.findOneAndUpdate({_id: req.session.user.userId}, toUpdate, (error, data) =>
+            {
+                if (error)
+                {
+                    if (error.codeName.includes("DuplicateKey"))
+                        return res.json({error: "Email and/or username is already in use, please use another one."});
+                    else
+                        return res.json({error: "There has been an error trying to find user details, try again later."});
+                } else
+                {
+                    if (data) {
+                        return res.json(data);
+                    } else {
+                        return res.json({error: "User was not found, please re-log and try again. (relog)"});
+                    }
+                }
+            });
+
         });
 
 
@@ -390,5 +455,4 @@ router.route('/delete_user/:id').delete((req, res, next) =>
 router.route('/logout/').post((req, res, next) => {
     req.session.destroy();
 });
-
 module.exports = router;

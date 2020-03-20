@@ -125,7 +125,7 @@
       #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_details {
         align-content: center;
         padding-left: 5px;
-        flex-basis: auto; }
+        flex-basis: 75%; }
         #topic #ag_topic_content #ag_topic_posts .ag_topic_post .ag_topic_post_header .ag_topic_post_header_details .ag_topic_post_username {
           flex-basis: 100%;
           text-align: left; }
@@ -137,6 +137,9 @@
       flex-basis: 100%; }
 
   #ag_community_container #ag_community {
+    flex-basis: 100%; }
+
+  #ag_settings {
     flex-basis: 100%; } }
 @media screen and (max-width: 485px) {
   #subforum #ag_subforum_topic_content #ag_subforum_topics .ag_subforum_topic .ag_subforum_topic_details {

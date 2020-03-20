@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Register from "./components/Register";
 import Community from "./components/Community";
 import Login from "./components/Login";
+import Settings from "./components/Settings";
 
 
 if (typeof sessionStorage.loggedIn === 'undefined')
@@ -31,6 +32,7 @@ export default class App extends Component
                     <Route exact path='/community' component={Community}/>
                     <Route exact path='/register' component={Register}/>
                     <Route exact path='/login' component={Login}/>
+                    <Route path='/settings' component={Settings}/>
                     <Route exact path='/topic/:id' component={Topic}/>
                     <Route exact path='/subforum/:sub_id/:subt_id' component={Subforum}/>
                     <Route exact path='/subforum/:sub_id/:subt_id/page/:page' component={Subforum}/>

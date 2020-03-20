@@ -12,6 +12,7 @@ const usersRouter = require('../server/routes/users');
 const forumRouter = require('../server/routes/forum');
 const subforumRouter = require('../server/routes/subforum');
 const topicRouter = require('../server/routes/topic');
+const imageRouter = require('../server/routes/image');
 
 
 // Express
@@ -39,7 +40,8 @@ app.use('/users', usersRouter);
 app.use('/forum', forumRouter);
 app.use('/subforum', subforumRouter);
 app.use('/topic', topicRouter);
-
+app.use('/img/profiles', express.static('profiles'));
+app.use('/image', imageRouter);
 
 // Error 404
 app.use((req, res, next) => {

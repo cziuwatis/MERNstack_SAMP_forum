@@ -29,6 +29,7 @@
       color: white;
       border-bottom: 4px solid #758e4f;
       border-left: 10px solid #758e4f;
+      text-shadow: black 3px 2px 4px;
       background-image: url(../img/backgroundcityedit1.png);
       background-size: cover;
       background-position-y: 55%;

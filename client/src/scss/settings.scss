@@ -1,0 +1,130 @@
+@import 'variables.scss';
+
+
+#ag_settings_container{
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+#ag_settings{
+    animation: show_nice .3s;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    box-shadow: 0px 0px 10px black;
+    border-radius: 5px;
+    overflow: hidden;
+    padding-bottom: 15px;
+    flex-basis: 80%;
+    .ag_settings_header{
+        flex-basis: 100%;
+        background-color: $secondary-color;
+        color: white;
+        border-bottom: 4px solid $tertiary-color;
+        border-left: 10px solid $tertiary-color;
+        text-shadow: black 3px 2px 4px;
+        background-image: url(../img/backgroundcityedit1.png);
+        background-size: cover;
+        background-position-y: 55%;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+    .ag_settings_menu{
+        flex-basis: 30%;
+        display: flex;
+        flex-direction: column;
+        word-wrap: anywhere;
+        margin: 0;
+        padding: 0;
+        border-right-style: solid;
+        border-right-width: 2px;
+        border-right-color: $nth-greylight;
+        .ag_settings_menu_option{
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+            transition-duration: .3s;
+            border-left-color: white;
+            border-left-width: 10px;
+            border-left-style: solid;
+            border-right-color: white;
+            border-right-width: 10px;
+            border-right-style: solid;
+            &:hover{
+                border-left-color: $tertiary-color;
+                border-right-color: $tertiary-color;
+                background-color: $secondary-color;
+                color: white;
+                transition-duration: .3s;
+                cursor: pointer;
+            }
+            &.active{
+                background-color: $primary-color;
+                border-color: $tertiary-color;
+                color: white;
+            }
+        }
+    }
+    .ag_settings_setting_container{
+        flex-basis: 65%;
+        padding: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        .ag_settings_setting{
+            animation: show_nice .3s;
+            flex-basis: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            .ag_settings_setting_error_container{
+                display: flex;
+                flex-wrap: wrap;
+                .ag_settings_setting_error, .ag_settings_setting_success{
+                    animation: show_nice .3s;
+                    color: red;
+                    color: white;
+                    background-color: rgba(190, 37, 37, 0.83);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 2px;
+                    flex-basis: 100%;
+                }
+                .ag_settings_setting_success{
+                    background-color: rgba(37, 190, 37, 0.83);
+                }
+            }
+        }
+        .ag_settings_change_details, .ag_settings_change_credentials{
+            justify-content: center;
+            text-align: center;
+            button{
+                flex-basis: 30%;
+            }
+            input{
+                flex-basis: 70%;
+                margin-bottom: 15px;
+                text-align: center;
+                padding: 5px;
+                border-style: solid;
+                border-width: 2px;
+                border-color: white;
+                border-bottom-color: $secondary-color;
+                border-bottom-width: 3px;
+                transition-duration: .3s;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                &:focus{
+                    border-color: $tertiary-color;
+                    transition-duration: .3s;
+                }
+            }
+            label{
+                flex-basis: 100%;
+            }
+        }
+    }
+}

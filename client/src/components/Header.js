@@ -34,16 +34,15 @@ export default class Header extends Component
         window.location.pathname = '/';
     }
     componentDidMount() {
+        axios.defaults.withCredentials = true;
         axios.get('http://localhost:4000/forum/server_stats')
                 .then(res => this.setState({server_stats: res.data}))
                 .catch((error) => console.log(error));
     }
     render() {
-        console.log(this.state);
         let maxPlayers = this.state.server_stats.maxPlayers;
         let playerCount = this.state.server_stats.playerCount;
         let playerStatsBackgroundPercentageStyle = {backgroundSize: (playerCount / maxPlayers * 100) + '% 100%'};
-        console.log(playerStatsBackgroundPercentageStyle);
         return (
                 <header id="ag_header">
                     <nav id="ag_top_header">
@@ -63,7 +62,7 @@ export default class Header extends Component
                                             </a>
                                             {
                                                             this.state.profileContextOpen ? <div className="ag_top_header_dropdown_content">
-                                                                <a href="#">Settings</a>
+                                                                <Link to="/settings">Settings</Link>
                                                                 <a onClick={this.logOut} >Logout</a>
                                                             </div> : null
                                             }

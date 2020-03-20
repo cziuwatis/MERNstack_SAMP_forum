@@ -121,7 +121,7 @@ export default class Subforum extends Component
                                 {
                                     sessionStorage.accessLevel > 1 ?
                                     <span onClick={this.toggleCreateModal} className="ag_subforum_create_topic_button ag_btn ag_common_btn">CREATE TOPIC</span>
-                                    : sessionStorage.accessLevel > 0 ? null :<Link to='/' className="ag_subforum_create_topic_button ag_btn ag_common_btn">Login</Link>
+                                    : sessionStorage.accessLevel > 0 ? null :<Link to='/login' className="ag_subforum_create_topic_button ag_btn ag_common_btn">Login</Link>
                                 }
                             </li>
                 
