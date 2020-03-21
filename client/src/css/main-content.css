@@ -241,7 +241,10 @@
       align-items: center; }
       #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post img {
         border-radius: 50%;
-        height: 45px;
+        min-height: 45px;
+        min-width: 45px;
+        max-height: 45px;
+        max-width: 45px;
         flex-basis: 20%; }
       #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul {
         padding: 0;

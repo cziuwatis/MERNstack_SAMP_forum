@@ -6,18 +6,6 @@ mongoose.set('useFindAndModify', false);
 
 let subforumsSchema = require(`../models/forum`);
 let userSchema = require(`../models/user`);
-function getUserAccessLevel(userId) {
-    userSchema.findById(userId,
-            'role',
-            (error, data) => {
-        if (error) {
-            return null;
-        } else {
-            return data.role;
-        }
-    }
-    );
-}
 
 router.route('/:id').get((req, res) =>
 {
@@ -37,36 +25,42 @@ router.route('/:sub_id/:subt_id/new_topic').put((req, res) =>
 {
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged, unable to create a new post'});
-    } else if (req.session.user.userId) {
-        //check accessLevel
-        let accessLevel = getUserAccessLevel(req.session.user.userId);
-        if (accessLevel < 1) {
-            return res.json({error: 'Insufficient permission'});
-        }
+        return res.json({error: 'User is not logged in, unable to promote user'});
     }
-    let topic = req.body;
-    topic.postedBy = req.session.user.userId;
-    topic.posts[0].postedBy = req.session.user.userId;
-    subforumsSchema.findOneAndUpdate({
-        _id: req.params.sub_id,
-        'topics._id': req.params.subt_id
-    }, {
-        $push: {
-            'topics.$.topics': topic,
-            $position: 0
-        }
-    }, {new : true}, (error, data) =>
-    {
-        if (error)
-        {
-            return res.json(error);
-        }
-        userSchema.findOneAndUpdate({_id: req.session.user.userId}, {$inc: {postCount: +1}}, (error, data) => {
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
+        } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 1) {
+                return res.json({error: 'Insufficient permission'});
+            }
+            let topic = req.body;
+            topic.postedBy = req.session.user.userId;
+            topic.posts[0].postedBy = req.session.user.userId;
+            subforumsSchema.findOneAndUpdate({
+                _id: req.params.sub_id,
+                'topics._id': req.params.subt_id
+            }, {
+                $push: {
+                    'topics.$.topics': topic,
+                    $position: 0
+                }
+            }, {new : true}, (error, data) =>
+            {
+                if (error)
+                {
+                    return res.json(error);
+                }
+                userSchema.findOneAndUpdate({_id: req.session.user.userId}, {$inc: {postCount: +1}}, (error, data) => {
 //                console.log(error);
 //                console.log(data);
-        });
-        res.json({msg: "success"});
+                });
+                res.json({msg: "success"});
+            });
+        }
     });
 });
 
@@ -138,7 +132,7 @@ router.route('/:sub_id/:subt_id/page/:page').post((req, res) =>
                     .populate({
                         path: 'topics.topics.posts.postedBy',
                         model: 'user',
-                        select: 'username country postCount role'})
+                        select: 'username country postCount role avatar'})
                     .exec(function (error, data)
                     {
                         if (error)
@@ -190,54 +184,65 @@ router.route('/:id/new_subforum_topic').put((req, res) =>
         {
             if (!req.session.user) {
                 console.log("no user set");
-                return res.json({error: 'User is not logged, unable to create a new post'});
-            } else if (req.session.user.userId) {
-                //check accessLevel
-                let accessLevel = getUserAccessLevel(req.session.user.userId);
-                if (accessLevel < 4) {
-                    return res.json({error: 'Insufficient permission'});
-                }
+                return res.json({error: 'User is not logged in, unable to promote user'});
             }
-            subforumsSchema.findByIdAndUpdate(req.params.id, {$push: {
-                    topics: {
-                        title: "Subforum Topic Name",
-                        description: "Subforum Topic description, what is it about?",
-                        topics: []
+            userSchema.findById(req.session.user.userId,
+                    'role',
+                    (error, requestUser) => {
+                if (requestUser === null) {
+                    return res.json({error: 'Session user not found, please re-login'});
+                } else {
+                    let requestAccessLevel = requestUser.role;
+                    if (requestAccessLevel < 4) {
+                        return res.json({error: 'Insufficient permission'});
                     }
-                }}, (error, data) =>
-            {
-                if (error)
-                {
-                    res.json(error);
+                    subforumsSchema.findByIdAndUpdate(req.params.id, {$push: {
+                            topics: {
+                                title: "Subforum Topic Name",
+                                description: "Subforum Topic description, what is it about?",
+                                topics: []
+                            }
+                        }}, (error, data) =>
+                    {
+                        if (error)
+                        {
+                            res.json(error);
+                        }
+                        res.json(data);
+                    });
                 }
-                res.json(data);
             });
-
         });
 
 router.route('/:id/update_subforum_topic/:topic_id').put((req, res, next) =>
         {
             if (!req.session.user) {
                 console.log("no user set");
-                return res.json({error: 'User is not logged, unable to create a new post'});
-            } else if (req.session.user.userId) {
-                //check accessLevel
-                let accessLevel = getUserAccessLevel(req.session.user.userId);
-                if (accessLevel < 4) {
-                    return res.json({error: 'Insufficient permission'});
-                }
+                return res.json({error: 'User is not logged in, unable to promote user'});
             }
-            subforumsSchema.findOneAndUpdate(
-                    {_id: req.params.id, 'topics._id': req.params.topic_id},
-                    {$set: {'topics.$.title': req.body.title, 'topics.$.description': req.body.description}},
-                    {omitUndefined: true}, (error, data) =>
-            {
-                if (error)
-                {
-                    res.json(error);
-                } else
-                {
-                    res.json(data);
+            userSchema.findById(req.session.user.userId,
+                    'role',
+                    (error, requestUser) => {
+                if (requestUser === null) {
+                    return res.json({error: 'Session user not found, please re-login'});
+                } else {
+                    let requestAccessLevel = requestUser.role;
+                    if (requestAccessLevel < 4) {
+                        return res.json({error: 'Insufficient permission'});
+                    }
+                    subforumsSchema.findOneAndUpdate(
+                            {_id: req.params.id, 'topics._id': req.params.topic_id},
+                            {$set: {'topics.$.title': req.body.title, 'topics.$.description': req.body.description}},
+                            {omitUndefined: true}, (error, data) =>
+                    {
+                        if (error)
+                        {
+                            res.json(error);
+                        } else
+                        {
+                            res.json(data);
+                        }
+                    });
                 }
             });
         });
@@ -246,45 +251,51 @@ router.route('/delete_topic/:subforum/:subforumTopic/:topic').delete((req, res, 
 {
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged, unable to create a new post'});
-    } else if (req.session.user.userId) {
-        //check accessLevel
-        let accessLevel = getUserAccessLevel(req.session.user.userId);
-        if (accessLevel < 4) {
-            return res.json({error: 'Insufficient permission'});
-        }
+        return res.json({error: 'User is not logged in, unable to promote user'});
     }
-    subforumsSchema.find({_id: req.params.subforum, 'topics._id': req.params.subforumTopic}, 'topics.$.topics', (error, data) =>
-    {
-        if (error)
-        {
-            res.status(500).json({msg: null, error: error});
-        } else
-        {
-            topics = data[0].topics[0].topics;
-            let found = false;
-            for (let i = 0; i < topics.length; i++) {
-                if (topics[i]._id == req.params.topic) {
-                    topics.splice(i, 1);
-                    found = true;
-                    break;
-                }
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
+        } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
             }
-            if (found) {
-                subforumsSchema.findOneAndUpdate(
-                        {_id: req.params.subforum, 'topics._id': req.params.subforumTopic},
-                        {$set: {'topics.$.topics': topics}},
-                        (error, data) => {
-                    if (error) {
-                        res.status(500).json({msg: null, error: error});
+            subforumsSchema.find({_id: req.params.subforum, 'topics._id': req.params.subforumTopic}, 'topics.$.topics', (error, data) =>
+            {
+                if (error)
+                {
+                    res.status(500).json({msg: null, error: error});
+                } else
+                {
+                    topics = data[0].topics[0].topics;
+                    let found = false;
+                    for (let i = 0; i < topics.length; i++) {
+                        if (topics[i]._id == req.params.topic) {
+                            topics.splice(i, 1);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        subforumsSchema.findOneAndUpdate(
+                                {_id: req.params.subforum, 'topics._id': req.params.subforumTopic},
+                                {$set: {'topics.$.topics': topics}},
+                                (error, data) => {
+                            if (error) {
+                                res.status(500).json({msg: null, error: error});
+                            } else {
+                                res.status(200).json({msg: "successfully removed topic", error: error});
+                            }
+                        }
+                        );
                     } else {
-                        res.status(200).json({msg: "successfully removed topic", error: error});
+                        res.status(500).json({msg: null, error: "Something went wrong"});
                     }
                 }
-                );
-            } else {
-                res.status(500).json({msg: null, error: "Something went wrong"});
-            }
+            });
         }
     });
 });

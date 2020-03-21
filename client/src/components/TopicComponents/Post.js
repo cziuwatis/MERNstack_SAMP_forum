@@ -43,7 +43,7 @@ export default class Post extends Component
                 <li className="ag_topic_post">
                     <div className="ag_topic_post_header">
                         <div className="ag_topic_post_header_profile_image_container">
-                            <img className="ag_topic_post_header_profile_image" src={"/img/profiles/profile.png"} alt="profile picture"/>
+                            <img className="ag_topic_post_header_profile_image" src={"http://localhost:4000/img/profiles/" + this.props.post.postedBy.avatar} alt="profile picture"/>
                         </div>
                         <div className="ag_topic_post_header_details">
                             <span className={"ag_topic_post_username ag_user_role " + role}><a>{this.state.postedBy.username}</a></span>
@@ -65,7 +65,7 @@ export default class Post extends Component
                     </div>
                     <div className="ag_topic_post_profile">
                         <div className="ag_topic_post_profile_image_container">
-                            <img className="ag_topic_post_profile_image" src={"/img/profiles/profile.png"} alt="profile picture"/>
+                            <img className="ag_topic_post_profile_image" src={"http://localhost:4000/img/profiles/" + this.props.post.postedBy.avatar} alt="profile picture"/>
                         </div>
                         <ul className="ag_topic_post_profile_info">
                             <li><span>Total posts</span><span>{this.props.post.postedBy.postCount}</span></li>

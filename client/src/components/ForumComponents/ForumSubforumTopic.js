@@ -158,17 +158,19 @@ export default class ForumSubforumTopic extends Component
                         }
                     </div>
                     <div className="ag_subforum_topic_statistic"><span><i className="far fa-comment-dots"></i> {messageCount}</span></div>
-                    <div className="ag_subforum_topic_latest_post">
-                        <img src="img/profiles/profile.png"/>
+                    
+                        
                         {
                         latestTopic ?                  
-                        <ul>
-                        <li><Link to={'/subforum/'+this.props.subforum_id+'/'+this.props.topic._id+'/topic/'+latestTopic._id}>{latestTopic.title}</Link></li>
-                            <li>{latestTopic.postedBy.username}</li>
-                            <li>{latestTopicDate}</li>
-                            </ul> : <ul><li>-</li><li>-</li><li>-</li></ul>
+                        <div className="ag_subforum_topic_latest_post">
+                            <img src={"http://localhost:4000/img/profiles/"+latestTopic.postedBy.avatar}/>
+                            <ul>
+                                <li><Link to={'/subforum/'+this.props.subforum_id+'/'+this.props.topic._id+'/topic/'+latestTopic._id}>{latestTopic.title}</Link></li>
+                                <li>{latestTopic.postedBy.username}</li>
+                                <li>{latestTopicDate}</li>
+                            </ul>
+                        </div>: <div className="ag_subforum_topic_latest_post"><img src="img/profiles/profile.png"/><ul><li>-</li><li>-</li><li>-</li></ul></div>
                         }
-                    </div>
                 </li>
                 );
     }

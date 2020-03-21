@@ -197,7 +197,10 @@
             align-items: center;
             img{
                 border-radius: 50%;
-                height: 45px;
+                min-height: 45px;
+                min-width: 45px;
+                max-height: 45px;
+                max-width: 45px;
                 // width: 45px;
                 flex-basis: 20%;
                 //display: inline-block;

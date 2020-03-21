@@ -85,7 +85,7 @@ router.route('/:sub_id/:subt_id/:topic_id/:page').get((req, res) =>
             .populate({
                 path: 'topics.topics.posts.postedBy topics.topics.postedBy',
                 model: 'user',
-                select: 'username country postCount role',
+                select: 'username country postCount role avatar',
                 populate: {
                     path: 'postedBy',
                     model: 'subforum'

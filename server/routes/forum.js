@@ -48,7 +48,7 @@ router.route('/').get((req, res) =>
             .populate({
                 path: 'topics.topics.postedBy',
                 model: 'user',
-                select: 'username role'
+                select: 'username role avatar'
             })
             .exec(function (error, data)
             {

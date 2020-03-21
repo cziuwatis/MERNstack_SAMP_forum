@@ -180,7 +180,10 @@
                     flex-basis: 50%;
                 }
                 img{
-                    height: 55px;
+                    min-height: 55px;
+                    max-height: 55px;
+                    min-width: 55px;
+                    min-height: 55px;
                     flex-basis: auto;
                 }
             }

@@ -40,9 +40,8 @@ app.use('/users', usersRouter);
 app.use('/forum', forumRouter);
 app.use('/subforum', subforumRouter);
 app.use('/topic', topicRouter);
-app.use('/img/profiles', express.static('profiles'));
+app.use('/img/profiles', express.static('uploads/profiles'));
 app.use('/image', imageRouter);
-
 // Error 404
 app.use((req, res, next) => {
     next(createError(404));

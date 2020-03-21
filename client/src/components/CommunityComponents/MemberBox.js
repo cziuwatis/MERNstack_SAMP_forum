@@ -73,10 +73,11 @@ export default class Community extends Component
         } else {
             role = 'guest';
         }
+        console.log(this.props.user);
         return (
                 <ContextMenuTrigger renderTag='li' id={this.props.user._id}>
                 
-                    <img className='ag_community_profile_image' src={"/img/profiles/profile.png"} alt='profile_picture' />
+                    <img className='ag_community_profile_image' src={"http://localhost:4000/img/profiles/" + this.props.user.avatar} alt='profile_picture' />
                     <span className={'ag_community_profile_username ag_user_role ' + role}>{this.state.username}</span>
                     <span className='ag_community_profile_role'>{role}</span>
                     <span className='ag_community_profile_post_count'>{this.props.user.postCount}</span>

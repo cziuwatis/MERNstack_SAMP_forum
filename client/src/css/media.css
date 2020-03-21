@@ -94,7 +94,10 @@
         #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post ul {
           flex-basis: 50%; }
         #ag_main_content .ag_subforum_topic .ag_subforum_topic_latest_post img {
-          height: 55px;
+          min-height: 55px;
+          max-height: 55px;
+          min-width: 55px;
+          min-height: 55px;
           flex-basis: auto; }
 
   #subforum #ag_subforum_topic_content {

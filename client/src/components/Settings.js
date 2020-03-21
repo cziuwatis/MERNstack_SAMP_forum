@@ -57,7 +57,7 @@ export default class Settings extends Component
                         </ul>
                         { this.state.modals.credentials && this.state.user.username ? <Credentials /> : null}
                         { this.state.modals.profile && this.state.user.username ? <Profile username={this.state.user.username} email={this.state.user.email}/> : null}
-                        { this.state.modals.avatar && this.state.user.username ? <Avatar userId={this.state.user._id} /> : null}
+                        { this.state.modals.avatar && this.state.user.username ? <Avatar avatar={this.state.user.avatar} userId={this.state.user._id} /> : null}
                     </div>
                 </div>
                 );

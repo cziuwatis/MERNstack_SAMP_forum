@@ -114,5 +114,56 @@
           transition-duration: .3s; }
       #ag_settings .ag_settings_setting_container .ag_settings_change_details label, #ag_settings .ag_settings_setting_container .ag_settings_change_credentials label {
         flex-basis: 100%; }
+    #ag_settings .ag_settings_setting_container .ag_settings_change_avatar {
+      justify-content: center;
+      text-align: center; }
+      #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatars_images_container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-basis: 100%; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatars_images_container img {
+          animation: show_nice .3s;
+          border-radius: 5px;
+          box-shadow: 0px 0px 3px black; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatars_images_container .ag_settings_avatar_post {
+          min-width: 150px;
+          max-width: 150px;
+          max-height: 150px;
+          min-height: 150px; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatars_images_container .ag_settings_avatar_square {
+          min-width: 60px;
+          max-width: 60px;
+          max-height: 60px;
+          min-height: 60px; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatars_images_container .ag_settings_avatar_round {
+          min-width: 45px;
+          max-width: 45px;
+          max-height: 45px;
+          min-height: 45px;
+          border-radius: 50%; }
+      #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatar_upload_image_container {
+        flex-basis: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 15px;
+        margin-bottom: 15px; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatar_upload_image_container input {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatar_upload_image_container label {
+          flex-basis: 100%;
+          text-align: center; }
+        #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_settings_avatar_upload_image_container .ag_settings_avatar_image_info {
+          color: rgba(1, 1, 1, 0.5);
+          margin-bottom: 5px;
+          font-size: 15px; }
+      #ag_settings .ag_settings_setting_container .ag_settings_change_avatar .ag_submit_button {
+        flex-basis: 30%; }
 
 /*# sourceMappingURL=settings.css.map */

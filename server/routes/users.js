@@ -46,7 +46,7 @@ router.route('/').post((req, res) =>
             if (req.body.last_id) {
                 findQuery = {'_id': {'$gt': req.body.last_id}};
             }
-            userSchema.find(findQuery, 'username country postCount role').limit(usersPerPageLimit).exec(function (error, data)
+            userSchema.find(findQuery, 'username country postCount role avatar').limit(usersPerPageLimit).exec(function (error, data)
             {
                 if (error)
                 {

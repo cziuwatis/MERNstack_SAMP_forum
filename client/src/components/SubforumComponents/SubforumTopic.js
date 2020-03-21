@@ -48,7 +48,7 @@ export default class SubforumTopic extends Component
                     </div>
                     <div className="ag_subforum_topic_statistics"><span><i className="far fa-comment-dots"></i> {this.props.topic.postCount}</span></div>
                     <div className="ag_subforum_topic_latest_post">
-                        <img src={"/img/profiles/profile.png"} alt="profile picture"/>
+                        <img src={"http://localhost:4000/img/profiles/"+this.props.topic.latestPost.postedBy.avatar} alt="profile picture"/>
                         <ul>
                             <li>{this.props.topic.latestPost.postedBy.username}</li>
                             <li>{latestPostDate}</li>

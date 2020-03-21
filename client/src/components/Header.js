@@ -15,6 +15,9 @@ export default class Header extends Component
                 version: "3.7.2",
                 maxPlayers: 300,
                 playerCount: 0
+            },
+            user: {
+
             }
         };
     }
@@ -38,6 +41,10 @@ export default class Header extends Component
         axios.get('http://localhost:4000/forum/server_stats')
                 .then(res => this.setState({server_stats: res.data}))
                 .catch((error) => console.log(error));
+        axios.defaults.withCredentials = true;
+        axios.get('http://localhost:4000/users/get_user')
+                .then(res => !res.data.error ? this.setState({user: res.data}) : res.data.error.includes('relog'))
+                .catch((error) => console.log(error));
     }
     render() {
         let maxPlayers = this.state.server_stats.maxPlayers;
@@ -52,17 +59,17 @@ export default class Header extends Component
                                 <Link to="/community"><i className="fas fa-users"></i> Community</Link>
                             </li>
                             {
-                                sessionStorage.loggedIn === 'true' ?
+                                this.state.user && sessionStorage.loggedIn === 'true' ?
                                     <li id="ag_user_header_profile">
                                         <div className="ag_top_header_dropdown">
                                             <a className={this.state.profileContextOpen ? "ag_active_header" : ""} onClick={this.toggleContext}>
-                                                <img id="ag_header_avatar" src={"/img/profiles/profile.png"} alt="profile_picture"/>
-                                                {sessionStorage.username}
+                                                <img id="ag_header_avatar" src={"http://localhost:4000/img/profiles/" + this.state.user.avatar} alt="profile_picture"/>
+                                                {this.state.user.username}
                                                 <i className="fas fa-caret-down"></i>
                                             </a>
                                             {
                                                             this.state.profileContextOpen ? <div className="ag_top_header_dropdown_content">
-                                                                <Link to="/settings">Settings</Link>
+                                                                <Link to="/settings" onClick={this.toggleContext}>Settings</Link>
                                                                 <a onClick={this.logOut} >Logout</a>
                                                             </div> : null
                                             }
