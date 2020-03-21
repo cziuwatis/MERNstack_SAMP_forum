@@ -31,9 +31,7 @@ export default class Header extends Component
         axios.post('http://localhost:4000/users/logout')
                 .then(res => console.log("logged out"))
                 .catch((error) => console.log(error));
-        sessionStorage.loggedIn = 'false';
-        sessionStorage.accessLevel = 0;
-        sessionStorage.username = '';
+        this.removeSession();
         window.location.pathname = '/';
     }
     componentDidMount() {
@@ -45,6 +43,11 @@ export default class Header extends Component
         axios.get('http://localhost:4000/users/get_user')
                 .then(res => !res.data.error ? this.setState({user: res.data}) : res.data.error.includes('relog'))
                 .catch((error) => console.log(error));
+    }
+    removeSession() {
+        sessionStorage.loggedIn = 'false';
+        sessionStorage.accessLevel = 0;
+        sessionStorage.username = '';
     }
     render() {
         let maxPlayers = this.state.server_stats.maxPlayers;
@@ -59,7 +62,7 @@ export default class Header extends Component
                                 <Link to="/community"><i className="fas fa-users"></i> Community</Link>
                             </li>
                             {
-                                this.state.user && sessionStorage.loggedIn === 'true' ?
+                                this.state.user.username && sessionStorage.loggedIn === 'true' ?
                                     <li id="ag_user_header_profile">
                                         <div className="ag_top_header_dropdown">
                                             <a className={this.state.profileContextOpen ? "ag_active_header" : ""} onClick={this.toggleContext}>

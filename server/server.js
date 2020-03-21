@@ -18,9 +18,9 @@ const imageRouter = require('../server/routes/image');
 // Express
 const app = express();
 app.use(session({
-    secret: "YOUR_SECRET_KEY",
-    resave: false,
-    cookie: {secure: false, maxAge: 6000000},
+    secret: "uRTOYe5ztq1GqktSWSsz",
+    resave: true,
+    cookie: {secure: false, maxAge: 30*24*60*60*100},
     saveUninitialized: true,
     store: new MongoStore({mongooseConnection: mongoose.connection})
 }));

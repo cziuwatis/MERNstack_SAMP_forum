@@ -46,7 +46,7 @@ export default class Subforum extends Component
         };
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/new_topic', topic)
-                .then(res => this.updateTopics())
+                .then(res => !res.data.error? this.updateTopics() : alert(res.data.error))
                 .catch((error) => console.log(error));
     }
 
@@ -54,7 +54,7 @@ export default class Subforum extends Component
         let deleteTopic = () => {
             axios.defaults.withCredentials = true;
             axios.delete('http://localhost:4000/subforum/delete_topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/" + id)
-                    .then(res => !res.data.error ? this.updateTopics() : console.log(res.data.error))
+                    .then(res => !res.data.error ? this.updateTopics() : alert.log(res.data.error))
                     .catch((error) => console.log(error));
         }
         confirmAlert({
@@ -69,7 +69,7 @@ export default class Subforum extends Component
     updateTopics() {
         axios.defaults.withCredentials = true;
         axios.post('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/page/" + this.state.currentPage, {sortBy: this.state.sortBy})
-                .then(res => !res.data.error ? this.setState({editModal: false, createModal: false, title: res.data.title, description: res.data.description, topics: res.data.topics, availablePages: res.data.availablePages}) : console.log(res.data.error))
+                .then(res => !res.data.error ? this.setState({editModal: false, createModal: false, title: res.data.title, description: res.data.description, topics: res.data.topics, availablePages: res.data.availablePages}) : alert(res.data.error))
                 .catch((error) => console.log(error));
     }
 
@@ -79,7 +79,7 @@ export default class Subforum extends Component
         } else {
             axios.defaults.withCredentials = true;
             axios.post('http://localhost:4000/subforum/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + "/page/" + page)
-                    .then(res => !res.data.error ? this.setState({currentPage: page, topics: res.data.topics, availablePages: res.data.availablePages}) : console.log(res.data.error))
+                    .then(res => !res.data.error ? this.setState({currentPage: page, topics: res.data.topics, availablePages: res.data.availablePages}) : alert(res.data.error))
                     .catch((error) => console.log(error));
         }
     }
@@ -103,7 +103,7 @@ export default class Subforum extends Component
     editTopic = (data) => {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/topic/' + this.props.match.params.sub_id + "/" + this.props.match.params.subt_id + '/edit_topic', data)
-                .then(res => this.updateTopics())
+                .then(res => !res.data.error? this.updateTopics() : alert(res.data.error))
                 .catch((error) => console.log(error));
     }
     render() {

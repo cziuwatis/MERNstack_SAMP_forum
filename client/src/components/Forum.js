@@ -27,7 +27,7 @@ export default class Forum extends Component
     addSubforum = e => {
         axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/forum/new_subforum')
-                .then(res => console.log())
+                .then(res => res.data.error? alert(res.data.error) : null)
                 .catch((error) => console.log(error));
         setTimeout(() => {
             axios.defaults.withCredentials = true;
