@@ -64,6 +64,27 @@ router.route('/').post((req, res) =>
 
         });
 
+router.route('/search/').post((req, res) =>
+        {
+            let searchString = req.body.searchString;
+            userSchema.find({username: {"$regex": searchString, "$options": "i"}}, 'username country postCount role avatar').limit(usersPerPageLimit * 2).exec(function (error, data)
+            {
+                if (error)
+                {
+                    return res.json(error);
+                } else
+                {
+                    if (data) {
+                        let users = data;
+                        res.json({users: users});
+                    } else {
+                        res.json({error: "No more data available"});
+                    }
+                }
+            });
+
+        });
+
 
 // Read one record
 router.route('/get_user/').get((req, res) =>

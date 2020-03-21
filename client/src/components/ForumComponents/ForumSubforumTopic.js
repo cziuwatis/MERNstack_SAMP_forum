@@ -2,6 +2,9 @@ import React, {Component} from "react";
 import ContentEditable from 'react-contenteditable';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import ConfirmationUI from '../ConfirmationUI';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 
 export default class ForumSubforumTopic extends Component
@@ -69,13 +72,13 @@ export default class ForumSubforumTopic extends Component
       if (keyCode === 13) {
         event.returnValue = false;
           this.confirmEdit(event, editField);
-        if (event.preventDefault) event.preventDefault()
+        if (event.preventDefault){ event.preventDefault();}
       }
     }
     highlightAll = () => {
         setTimeout(() => {
             document.execCommand('selectAll', false, null)
-        }, 0)
+        }, 0);
     }
     trimSpaces = string => {
         return string
@@ -83,7 +86,7 @@ export default class ForumSubforumTopic extends Component
           .replace(/&amp;/g, '&')
           .replace(/&gt;/g, '>')
           .replace(/&lt;/g, '<')
-          .replace(/<br>/g, '')
+          .replace(/<br>/g, '');
     }
     
     editModeCancel(){
@@ -94,6 +97,19 @@ export default class ForumSubforumTopic extends Component
             }
             this.setState({edit: tempStates});
         }
+    }
+    
+    deleteSubforumTopic = e =>{
+        let deleteTopic = () =>{
+        this.props.deleteTopic(this.props.topic._id);
+        }
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                        <ConfirmationUI query={"Are you sure?"} msg={"you are about to delete a subforum topic"} closeFunction={onClose} yesFunction={deleteTopic}/>
+                        );
+            }
+        });
     }
     
     render() {
@@ -161,6 +177,7 @@ export default class ForumSubforumTopic extends Component
                     
                         
                         {
+                        this.props.editMode ? <div className="ag_subforum_topic_latest_post"><i onClick={this.deleteSubforumTopic} className="fas fa-times-circle ag_subforum_topic_delete"></i> </div> :
                         latestTopic ?                  
                         <div className="ag_subforum_topic_latest_post">
                             <img src={"http://localhost:4000/img/profiles/"+latestTopic.postedBy.avatar}/>

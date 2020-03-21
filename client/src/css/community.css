@@ -15,7 +15,20 @@
     flex-basis: 55%;
     margin-bottom: 15px;
     justify-content: center;
-    transition-duration: .3s; }
+    transition-duration: .3s;
+    display: flex;
+    flex-wrap: wrap; }
+    #ag_community_container #ag_community .ag_community_search {
+      flex-basis: 90%;
+      padding: 5px;
+      border-bottom: 2px solid #594455;
+      display: flex;
+      flex-wrap: wrap; }
+      #ag_community_container #ag_community .ag_community_search input {
+        border: 0;
+        flex-basis: 85%; }
+      #ag_community_container #ag_community .ag_community_search i {
+        flex-basis: 10%; }
     #ag_community_container #ag_community .ag_community_title {
       text-shadow: black 3px 2px 4px;
       border-top-left-radius: 5px;

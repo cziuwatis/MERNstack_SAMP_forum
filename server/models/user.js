@@ -9,7 +9,7 @@ let userSchema = new mongoose.Schema(
         {
             //_id: mongoose.Schema.Types.ObjectId,
             email: {type: String, required: true, unique: true},
-            username: {type: String, unique: true, required: true, minlength: 3, maxlength: 20, collation: {locale: 'simple', strength: 1}},
+            username: {type: String, unique: true, required: true, minlength: 3, index: true, maxlength: 20, collation: {locale: 'simple', strength: 1}},
             password: {type: String, required: true, minlength: 10},
             salt: {type: String, required: true},
             avatar: {type: String, default: 'default.png'},

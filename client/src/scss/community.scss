@@ -13,6 +13,22 @@
         margin-bottom: 15px;
         justify-content: center;
         transition-duration: .3s;
+        display: flex;
+        flex-wrap: wrap;
+        .ag_community_search{
+            flex-basis: 90%;
+            padding: 5px;
+            border-bottom: 2px solid $secondary-color;
+            display: flex;
+            flex-wrap: wrap;
+            input{
+                border: 0;
+                flex-basis: 85%;
+            }
+            i{
+                flex-basis: 10%;
+            }
+        }
         .ag_community_title{
             text-shadow: black 3px 2px 4px;
             border-top-left-radius: 5px;

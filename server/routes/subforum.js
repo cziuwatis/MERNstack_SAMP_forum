@@ -25,7 +25,7 @@ router.route('/:sub_id/:subt_id/new_topic').put((req, res) =>
 {
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged in, unable to promote user'});
+        return res.json({error: 'User is not logged in, unable to create new topic'});
     }
     userSchema.findById(req.session.user.userId,
             'role',
@@ -184,7 +184,7 @@ router.route('/:id/new_subforum_topic').put((req, res) =>
         {
             if (!req.session.user) {
                 console.log("no user set");
-                return res.json({error: 'User is not logged in, unable to promote user'});
+                return res.json({error: 'User is not logged in, unable to create new subforum topic'});
             }
             userSchema.findById(req.session.user.userId,
                     'role',
@@ -218,7 +218,7 @@ router.route('/:id/update_subforum_topic/:topic_id').put((req, res, next) =>
         {
             if (!req.session.user) {
                 console.log("no user set");
-                return res.json({error: 'User is not logged in, unable to promote user'});
+                return res.json({error: 'User is not logged in, unable to update subforum topic'});
             }
             userSchema.findById(req.session.user.userId,
                     'role',
@@ -251,7 +251,7 @@ router.route('/delete_topic/:subforum/:subforumTopic/:topic').delete((req, res, 
 {
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged in, unable to promote user'});
+        return res.json({error: 'User is not logged in, unable to delete topic'});
     }
     userSchema.findById(req.session.user.userId,
             'role',
@@ -300,4 +300,35 @@ router.route('/delete_topic/:subforum/:subforumTopic/:topic').delete((req, res, 
     });
 });
 
+
+router.route('/delete/:sub_id/:subt_id/').delete((req, res) => {
+    if (!req.session.user) {
+        console.log("no user set");
+        return res.json({error: 'User is not logged in, unable to delete subforum topic'});
+    }
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
+        } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
+            }
+            subforumsSchema.findOneAndUpdate({
+                _id: req.params.sub_id,
+                'topics._id': req.params.subt_id
+            },
+                    {$pull: {'topics': {'_id': req.params.subt_id}}},
+                    (error, data) => {
+                if (error) {
+                    res.json({error: error.errmsg});
+                } else {
+                    res.json({msg: "Success"});
+                }
+            });
+        }
+    });
+});
 module.exports = router;

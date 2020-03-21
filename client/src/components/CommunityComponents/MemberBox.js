@@ -73,7 +73,6 @@ export default class Community extends Component
         } else {
             role = 'guest';
         }
-        console.log(this.props.user);
         return (
                 <ContextMenuTrigger renderTag='li' id={this.props.user._id}>
                 

@@ -34,6 +34,8 @@ export default class SubforumTopic extends Component
         this.closeEditContextualMenu();
         this.props.editTopic(e, {_id: this.props.topic._id, title: this.state.title, content: this.props.topic.content});
     }
+    
+    
     render() {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let date = new Date(this.state.creationDate);

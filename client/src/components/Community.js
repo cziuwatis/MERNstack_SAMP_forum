@@ -27,13 +27,23 @@ export default class Community extends Component
         this.setState({users: this.state.users.filter(user => user._id != userId)});
     }
 
+    searchMember = e => {
+        if (e.key === "Enter") {
+            axios.defaults.withCredentials = true;
+            axios.post('http://localhost:4000/users/search/', {searchString: e.target.value})
+                    .then(res => !res.data.error ? this.setState({users: res.data.users, moreAvailable: false}) : console.log(res.data.error))
+                    .catch((error) => console.log(error));
+        }
+    }
+
     render() {
         return (
                 <div id='ag_community_container'>
                     <div id='ag_community'>
                         <h1 className='ag_community_title'>Community Members</h1>
-                        <div>
-                            search bar would be here?
+                        <div className='ag_community_search'>
+                            <input onKeyPress={this.searchMember} type='text' placeholder='Search members here' />
+                            <i className="fas fa-search"></i>
                         </div>
                         <ul className='ag_community_members_container'>
                             {this.state.users.map(user => <MemberBox key={user._id} deleteUser={this.deleteUser} user={user}/>)}

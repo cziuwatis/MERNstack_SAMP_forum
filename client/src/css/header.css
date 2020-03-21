@@ -59,8 +59,10 @@
           display: block;
           text-align: center; }
       #ag_header #ag_top_header ul #ag_user_header_profile #ag_header_avatar {
-        width: 40px;
-        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        max-width: 40px;
+        max-height: 40px;
         border-radius: 50%; }
       #ag_header #ag_top_header ul #ag_user_header_profile #ag_user_settings {
         margin-left: 5px; }

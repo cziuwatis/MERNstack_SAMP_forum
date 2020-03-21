@@ -90,7 +90,7 @@ export default class ForumSubforum extends Component
     }
     
     addTopic = e =>{
-            axios.defaults.withCredentials = true;
+        axios.defaults.withCredentials = true;
         axios.put('http://localhost:4000/subforum/'+this.props.subforum._id+'/new_subforum_topic')
                 .then(res => console.log(res.data))
                 .catch((error) => console.log(error));
@@ -99,6 +99,15 @@ export default class ForumSubforum extends Component
     move = e=>{
         this.props.move(e.target.getAttribute('name'), this.props.subforum);
     }
+    
+    
+    deleteTopic = id =>{
+        axios.defaults.withCredentials = true;
+        axios.delete('http://localhost:4000/subforum/delete/'+this.props.subforum._id+'/'+id)
+                .then(res => res.data.error? alert(res.data.error) : this.setState({topics: this.state.topics.filter(topic => topic._id !== id)}) )
+                .catch((error) => console.log(error));
+    }
+    
     render() {
 
         return (
@@ -135,7 +144,7 @@ export default class ForumSubforum extends Component
                         </div> : null
                     }
                     <ul>
-                        {this.state.topics.map((topic) => <ForumSubforumTopic key={topic._id} editMode={this.state.topicEditMode} subforum_id={this.props.subforum._id} topic={topic} />)}
+                        {this.state.topics.map((topic) => <ForumSubforumTopic key={topic._id} deleteTopic={this.deleteTopic} editMode={this.state.topicEditMode} subforum_id={this.props.subforum._id} topic={topic} />)}
                     </ul>
                 </li>
                 );

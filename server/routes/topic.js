@@ -7,20 +7,7 @@ mongoose.set('useFindAndModify', false);
 let subforumsSchema = require(`../models/forum`);
 let countersSchema = require(`../models/counter`);
 let userSchema = require(`../models/user`);
-function getUserAccessLevel(userId) {
-    userSchema.findById(userId,
-            'role',
-            (error, data) => {
-        if (error) {
-            console.log(error);
-            return null;
-        } else {
-            console.log(data);
-            return data.role;
-        }
-    }
-    );
-}
+
 //get topic content
 router.route('/:sub_id/:subt_id/:topic_id').get((req, res) =>
 {
@@ -171,46 +158,48 @@ router.route('/:sub_id/:subt_id/:topic_id/new_post').put((req, res) =>
     // let post = {_id: getNextSequenceValue("postid"), content: req.body.content, postedBy: req.body.postedBy};
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged, unable to create a new post'});
-    } else if (req.session.user.userId) {
-        //check accessLevel
-        let accessLevel = getUserAccessLevel(req.session.user.userId);
-        if (accessLevel < 1) {
-            return res.json({error: 'Insufficient permission'});
-        }
-    } else {
-        return res.json({error: "userId doesn't exist"});
+        return res.json({error: 'User is not logged in, unable to create new post'});
     }
-    let post = {content: req.body.content, postedBy: req.session.user.userId};
-    subforumsSchema.findOneAndUpdate({
-        _id: req.params.sub_id,
-        'topics._id': req.params.subt_id,
-        'topics.topics._id': req.params.topic_id
-    },
-            {$push: {'topics.$.topics.$[elem].posts': post}},
-            {
-                new : true,
-                arrayFilters: [{'elem._id': req.params.topic_id}]
-            }, (error, data) => {
-        if (error) {
-            res.json(error);
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
         } else {
-            let topics = data.topics[0].topics;
-            let availablePages = 1;
-            for (let i = 0; i < topics.length; i++) {
-                if (topics[i]._id == req.params.topic_id) {
-                    availablePages = Math.ceil((topics[i].posts.length) / perPageLimit);
-                    break;
-                }
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 1) {
+                return res.json({error: 'Insufficient permission'});
             }
-            //console.log(req.session.user.userId);
-            userSchema.findOneAndUpdate({_id: req.session.user.userId}, {$inc: {postCount: +1}}, (error, data)=>{
+            let post = {content: req.body.content, postedBy: req.session.user.userId};
+            subforumsSchema.findOneAndUpdate({
+                _id: req.params.sub_id,
+                'topics._id': req.params.subt_id,
+                'topics.topics._id': req.params.topic_id
+            },
+                    {$push: {'topics.$.topics.$[elem].posts': post}},
+                    {
+                        new : true,
+                        arrayFilters: [{'elem._id': req.params.topic_id}]
+                    }, (error, data) => {
+                if (error) {
+                    res.json(error);
+                } else {
+                    let topics = data.topics[0].topics;
+                    let availablePages = 1;
+                    for (let i = 0; i < topics.length; i++) {
+                        if (topics[i]._id == req.params.topic_id) {
+                            availablePages = Math.ceil((topics[i].posts.length) / perPageLimit);
+                            break;
+                        }
+                    }
+                    //console.log(req.session.user.userId);
+                    userSchema.findOneAndUpdate({_id: req.session.user.userId}, {$inc: {postCount: +1}}, (error, data) => {
 //                console.log(error);
 //                console.log(data);
+                    });
+                    res.json({msg: 'success', availablePages: availablePages});
+                }
             });
-            res.json({msg: 'success', availablePages: availablePages});
-        }
-    });
 
 //    subforumsSchema.findOne({
 //        _id: req.params.sub_id,
@@ -249,6 +238,8 @@ router.route('/:sub_id/:subt_id/:topic_id/new_post').put((req, res) =>
 //            );
 //        }
 //    });
+        }
+    });
 });
 
 
@@ -257,33 +248,37 @@ router.route('/:sub_id/:subt_id/:topic_id/new_post').put((req, res) =>
 router.route('/:sub_id/:subt_id/edit_topic').put((req, res) => {
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged, unable to create a new post'});
-    } else if (req.session.user.userId) {
-        //check accessLevel
-        let accessLevel = getUserAccessLevel(req.session.user.userId);
-        if (accessLevel < 4) {
-            return res.json({error: 'Insufficient permission'});
-        }
+        return res.json({error: 'User is not logged in, unable to edit topic'});
     }
-    subforumsSchema.findOneAndUpdate({
-        _id: req.params.sub_id,
-        'topics._id': req.params.subt_id,
-        'topics.topics._id': req.body._id
-    },
-            {$set: {'topics.$.topics.$[elem].posts.0.content': req.body.content,
-                    'topics.$.topics.$[elem].title': req.body.title}},
-            {
-                new : true,
-                arrayFilters: [{'elem._id': req.body._id}]
-            }, (error, data) => {
-        console.log(error);
-        console.log(data);
-        if (error) {
-            res.json(error);
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
         } else {
-            res.json({msg: 'success', error: error});
-        }
-    });
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
+            }
+            subforumsSchema.findOneAndUpdate({
+                _id: req.params.sub_id,
+                'topics._id': req.params.subt_id,
+                'topics.topics._id': req.body._id
+            },
+                    {$set: {'topics.$.topics.$[elem].posts.0.content': req.body.content,
+                            'topics.$.topics.$[elem].title': req.body.title}},
+                    {
+                        new : true,
+                        arrayFilters: [{'elem._id': req.body._id}]
+                    }, (error, data) => {
+                console.log(error);
+                console.log(data);
+                if (error) {
+                    res.json(error);
+                } else {
+                    res.json({msg: 'success', error: error});
+                }
+            });
 
 //    subforumsSchema.findOne({
 //        _id: req.params.sub_id,
@@ -316,59 +311,67 @@ router.route('/:sub_id/:subt_id/edit_topic').put((req, res) => {
 //        }
 //    }
 //    );
+        }
+    });
 });
 
 //delete a post from topic
 router.route('/delete_post/:sub_id/:subt_id/:top_id/:post_id').delete((req, res) => {
     if (!req.session.user) {
         console.log("no user set");
-        return res.json({error: 'User is not logged, unable to create a new post'});
-    } else if (req.session.user.userId) {
-        //check accessLevel
-        let accessLevel = getUserAccessLevel(req.session.user.userId);
-        if (accessLevel < 4) {
-            return res.json({error: 'Insufficient permission'});
-        }
+        return res.json({error: 'User is not logged in, unable to delete post'});
     }
-    subforumsSchema.findOneAndUpdate({
-        _id: req.params.sub_id,
-        'topics._id': req.params.subt_id,
-        'topics.topics._id': req.params.top_id
-    },
-            {$pull: {'topics.$.topics': {'posts.0._id': req.params.post_id}}}, //pull topic out if the post deleted is the first post of topic
-            (error, data) => {
-        if (error) {
-            res.json(error);
+    userSchema.findById(req.session.user.userId,
+            'role',
+            (error, requestUser) => {
+        if (requestUser === null) {
+            return res.json({error: 'Session user not found, please re-login'});
         } else {
+            let requestAccessLevel = requestUser.role;
+            if (requestAccessLevel < 4) {
+                return res.json({error: 'Insufficient permission'});
+            }
             subforumsSchema.findOneAndUpdate({
                 _id: req.params.sub_id,
                 'topics._id': req.params.subt_id,
-                'topics.topics._id': req.params.top_id,
-                'topics.topics.posts._id': req.params.post_id
+                'topics.topics._id': req.params.top_id
             },
-                    {$pull: {'topics.$.topics.$[elem].posts': {_id: req.params.post_id}}},
-                    {
-                        new : true,
-                        arrayFilters: [{'elem._id': req.params.top_id}]
-                    }, (error, data) => {
+                    {$pull: {'topics.$.topics': {'posts.0._id': req.params.post_id}}}, //pull topic out if the post deleted is the first post of topic
+                    (error, data) => {
                 if (error) {
-                    return  res.json(error);
+                    res.json(error);
                 } else {
-                    let response = {};
-                    if (data === null) {
-                        response.error = "Posts not found for specified topic";
-                    } else {
-                        let topics = data.topics[0].topics;
-                        for (let i = 0; i < topics.length; i++) {
-                            if (topics[i]._id == req.params.top_id) {
-                                response.availablePages = Math.ceil(topics[i].posts.length / perPageLimit);
-                                break;
+                    subforumsSchema.findOneAndUpdate({
+                        _id: req.params.sub_id,
+                        'topics._id': req.params.subt_id,
+                        'topics.topics._id': req.params.top_id,
+                        'topics.topics.posts._id': req.params.post_id
+                    },
+                            {$pull: {'topics.$.topics.$[elem].posts': {_id: req.params.post_id}}},
+                            {
+                                new : true,
+                                arrayFilters: [{'elem._id': req.params.top_id}]
+                            }, (error, data) => {
+                        if (error) {
+                            return  res.json(error);
+                        } else {
+                            let response = {};
+                            if (data === null) {
+                                response.error = "Posts not found for specified topic";
+                            } else {
+                                let topics = data.topics[0].topics;
+                                for (let i = 0; i < topics.length; i++) {
+                                    if (topics[i]._id == req.params.top_id) {
+                                        response.availablePages = Math.ceil(topics[i].posts.length / perPageLimit);
+                                        break;
+                                    }
+                                }
                             }
-                        }
-                    }
-                    console.log(response);
-                    res.json(response);
+                            console.log(response);
+                            res.json(response);
 
+                        }
+                    });
                 }
             });
         }
@@ -429,12 +432,12 @@ router.route('/delete_post/:sub_id/:subt_id/:top_id/:post_id').delete((req, res)
 
 module.exports = router;
 
-function getNextSequenceValue(sequenceName) {
-
-    let sequenceDocument = countersSchema.findByIdAndUpdate(
-            {_id: sequenceName},
-            {$inc: {sequence_value: 1}}
-    );
-    console.log(sequenceDocument.sequence_value);
-    return sequenceDocument.sequence_value;
-}
+//function getNextSequenceValue(sequenceName) {
+//
+//    let sequenceDocument = countersSchema.findByIdAndUpdate(
+//            {_id: sequenceName},
+//            {$inc: {sequence_value: 1}}
+//    );
+//    console.log(sequenceDocument.sequence_value);
+//    return sequenceDocument.sequence_value;
+//}
